@@ -10,12 +10,12 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../'))
 
-project = 'ProjectName'
-copyright = '2024, AuthorName'
-author = 'AuthorName'
+project = 'PItBE'
+copyright = '2024, Reo BABA'
+author = 'Reo BABA'
 
-version = 'VersionNumber'
-release = 'VersionNumber'
+version = '1.0.1'
+release = '1.0.1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
