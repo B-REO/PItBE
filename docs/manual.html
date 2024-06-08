@@ -18,8 +18,7 @@
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Welcome to ProjectName’s documentation!" href="index.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,18 +44,8 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">manual module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#manual.circ_make"><code class="docutils literal notranslate"><span class="pre">circ_make()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#manual.coeff_make"><code class="docutils literal notranslate"><span class="pre">coeff_make()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#manual.cont_order"><code class="docutils literal notranslate"><span class="pre">cont_order()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#manual.main_research"><code class="docutils literal notranslate"><span class="pre">main_research()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#manual.mat_make"><code class="docutils literal notranslate"><span class="pre">mat_make()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#manual.normlize"><code class="docutils literal notranslate"><span class="pre">normlize()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#manual.read_jw"><code class="docutils literal notranslate"><span class="pre">read_jw()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#manual.vec_make"><code class="docutils literal notranslate"><span class="pre">vec_make()</span></code></a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">PItBE</a></li>
 </ul>
 
         </div>
@@ -83,267 +72,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-manual">
-<span id="manual-module"></span><h1>manual module<a class="headerlink" href="#module-manual" title="Permalink to this heading"></a></h1>
-<p>Introduction of PItBE</p>
-<p>ある正方行列がパウリ行列「X,Y,Z,I」の積による線型結合で記述できる場合、
-その正方行列を線型結合をなす各成分を作用させることで量子回路上で再現する
-手法として「ブロックエンコーディング」という手法が存在する。</p>
-<p>本プログラム「PItBE」は正方行列を線型結合で表現した際の情報を
-入力することで当該行列をブロックエンコーディングした量子回路を
-出力するものである。</p>
-<p>本プログラムの一部はXANADU社の開発した「PennyLane」というライブラリの
-実行結果を分析して作成した。ただあくまでも出力結果を参考にして作成した
-のであってコードをそのまま書き写したものではないことは留意して欲しい。</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="manual.circ_make">
-<span class="sig-prename descclassname"><span class="pre">manual.</span></span><span class="sig-name descname"><span class="pre">circ_make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gate_inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_one</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ancilla</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manual.html#circ_make"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manual.circ_make" title="Permalink to this definition"></a></dt>
-<dd><p>この関数は与えられた情報からブロックエンコーディングの
-回路を自動的に組み上げる</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>gate_inf（list）</strong> – パウリ行列積の情報が入ったlist
-格納されている各要素はstr型</p></li>
-<li><p><strong>zero_one（list）</strong> – 制御ビットの状態に関する情報が記載されているlist
-例えば補助ビット数が5個の回路において
-3番目のゲートへの制御ビットは[1, 1, 0, 0, 0]となる
-格納されている各要素はstr型
-なおこの値は本パッケージ内に含まれている関数
-「cont_order」の出力結果を代入することを想定している</p></li>
-<li><p><strong>circ（qulacs_core.QuantumCircuit）</strong> – 組み上げ先の回路
-回路のクラスは「qulacs」に含まれるクラスを利用している</p></li>
-<li><p><strong>qubit（str）</strong> – 量子回路に必要な総ビット数（補助ビット+メインビット）</p></li>
-<li><p><strong>ancilla（str）</strong> – 量子回路に必要な補助ビット数</p></li>
-</ul>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>前述の通りこの関数には「qulacs」のクラスを一部用いているので
-必ず関数のimport部分で「qulacs」をimportすること
-また引数「zero_list」の値に説明時に触れたもの以外を
-代入した場合想定外の挙動をとる場合もある</p>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="manual.coeff_make">
-<span class="sig-prename descclassname"><span class="pre">manual.</span></span><span class="sig-name descname"><span class="pre">coeff_make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manual.html#coeff_make"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manual.coeff_make" title="Permalink to this definition"></a></dt>
-<dd><p>この関数では本パッケージ内の関数「mat_make」で用いる引数を作成する</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vec（list）</strong> – 引数を計算したい要素を格納したlist
-格納されている各要素はfloat型</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>計算結果を格納したlist
-格納されている各要素はfloat型</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>coeff_list（list）</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="manual.cont_order">
-<span class="sig-prename descclassname"><span class="pre">manual.</span></span><span class="sig-name descname"><span class="pre">cont_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manual.html#cont_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manual.cont_order" title="Permalink to this definition"></a></dt>
-<dd><p>この関数は入力値を任意の桁数の2進数表記に変換する</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>order（str）</strong> – 2進数に変換したい値</p></li>
-<li><p><strong>rank（str）</strong> – 2進数表記の際の桁数</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>2進数変換後のそれぞれの桁での値を格納したlist
-格納する順序は1桁目から始まる
-格納されている値の型はstr</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>cont_list（list）</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cont_order</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="go">[1, 0, 1, 0]</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="manual.main_research">
-<span class="sig-prename descclassname"><span class="pre">manual.</span></span><span class="sig-name descname"><span class="pre">main_research</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ope_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manual.html#main_research"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manual.main_research" title="Permalink to this definition"></a></dt>
-<dd><p>この関数では線形結合を構成するパウリ行列積の一覧から
-量子回路上で必要なビット数を算出する</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ope_list（list）</strong> – </p></li>
-<li><p><strong>パウリ行列積の一覧を記述したlist</strong> – </p></li>
-<li><p><strong>格納されている各要素はstr型</strong> – </p></li>
-<li><p><strong>本パッケージ内にある関数「read_jw」による出力結果を用いる</strong> – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>作用先のビット番号のうち最大のものに1を足して出力する
-1を足しているのは作用先のビット番号が0から始まるためである</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.array(bit_list).max()+1（str）</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">main</span> <span class="o">=</span> <span class="n">main_research</span><span class="p">(</span><span class="n">ope</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>前述の通り入力情報は本パッケージ内の出力結果の利用を
-想定しているので異なる様式を用いた場合望んだ出力結果に
-ならないこともあるので注意してほしい</p>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="manual.mat_make">
-<span class="sig-prename descclassname"><span class="pre">manual.</span></span><span class="sig-name descname"><span class="pre">mat_make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elelist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coeff_lst</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manual.html#mat_make"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manual.mat_make" title="Permalink to this definition"></a></dt>
-<dd><p>mat_male</p>
-<p>この関数では線型結合の係数を補助ビット部分にセットする行列を作成する
-量子回路でもちいる行列はユニタリ性を満たす必要があるので
-複雑な過程が必要だが第一列目の要素と係数さえ入力すれば自動的に作成する</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>elelist（list）</strong> – 作成する行列の第一列目に格納される成分をベクトル要素とするlist
-格納されている要素はfloat型</p></li>
-<li><p><strong>coeff_lst（list）</strong> – 関数「vec_nake」でもちいる係数が格納されているlist
-格納されている要素はfloat型</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>作成したユニタリ行列が格納されたnp.array
-格納されている要素はfloat型</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>mat_ele_list（np.array）</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="manual.normlize">
-<span class="sig-prename descclassname"><span class="pre">manual.</span></span><span class="sig-name descname"><span class="pre">normlize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">non_normal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_anci</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_main</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manual.html#normlize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manual.normlize" title="Permalink to this definition"></a></dt>
-<dd><p>ブロックエンコーディングによる出力結果は再現した行列を任意の初期状態に
-作用させた結果だけでなく関係のないものも含まれている
-この関数ではその出力結果を入力情報として
-作用結果のみをピックアップし出力させる</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>non_normal（list）</strong> – ブロックエンコーディングによる初期状態への作用結果
-格納されている各要素はfloat型である</p></li>
-<li><p><strong>num_anci（str）</strong> – ブロックエンコーディングで用いる補助ビットの数</p></li>
-<li><p><strong>num_main（str）</strong> – ブロックエンコーディングで用いる初期状態を記述するビットの数</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>正しい作用結果のみを格納したlist
-格納されている各要素はfloat型である
-なおlistのsizeはnum_mainのそれである</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>nor_list（list）</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">norm_res</span> <span class="o">=</span> <span class="n">normlize</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">norm_res</span><span class="p">)</span>
-<span class="go">[0.5, 0.5]</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>本パッケージに含まれている関数「main_research」を用いることで
-引数num_mainは簡単に入力することができる
-ぜひ活用してほしい</p>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="manual.read_jw">
-<span class="sig-prename descclassname"><span class="pre">manual.</span></span><span class="sig-name descname"><span class="pre">read_jw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jw_inf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manual.html#read_jw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manual.read_jw" title="Permalink to this definition"></a></dt>
-<dd><p>この関数は正方行列のパウリ行列積の線型結合による表現を
-入力情報とし、係数部分と行列積部分に分解し出力するものである</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>jw_inf（str）</strong> – 正方行列のパウリ行列の線形結合による表現
-表現については「openfermion」を通じて
-得ることを想定している</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>線型結合で用いる係数を格納したlist</dt><dd><p>各要素はfloat型をとる</p>
-</dd>
-<dt>ope_list（list）:</dt><dd><p>線型結合で用いるパウリ行列積を格納したlist
-各要素はstr型をとる</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>num_list（list）</p>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>前述の通り入力するデータはライブラリ「openfermion」の関数
-「jordan_wigner」による出力結果を想定している
-この手法の出力結果以外を代入した場合、
-正しく実行されないこともあることに注意されたし</p>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="manual.vec_make">
-<span class="sig-prename descclassname"><span class="pre">manual.</span></span><span class="sig-name descname"><span class="pre">vec_make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ele</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coflst</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manual.html#vec_make"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manual.vec_make" title="Permalink to this definition"></a></dt>
-<dd><p>この関数は関数「mat_make」内で行列要素を計算するのに用いる</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ele（list）</strong> – 「mat_make」で扱う行列の要素が格納されたlist
-格納されている各要素の型はfloat</p></li>
-<li><p><strong>coflst（list）</strong> – 「mat_make」の行列要素に作用させる係数を格納したlist
-格納されている各要素の型はfloat</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>計算結果を格納するlist
-格納されている要素はfloat型</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>app_lst（list）</p>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>この関数は「mat_maker」内のみで用いることを想定している</p>
-</div>
-</dd></dl>
-
+  <section id="manual-module">
+<h1>manual module<a class="headerlink" href="#manual-module" title="Permalink to this heading"></a></h1>
 </section>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to ProjectName’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-    </div>
+          <footer>
 
   <hr/>
 

@@ -1,5 +1,8 @@
+PItBE
+=====
 
 .. toctree::
    :maxdepth: 4
 
-   manual
+   pitbe
+   setup

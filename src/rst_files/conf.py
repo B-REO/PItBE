@@ -8,19 +8,20 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../'))
+#sys.path.insert(0, os.path.abspath('../'))
 
 project = 'PItBE'
 copyright = '2024, Reo BABA'
 author = 'Reo BABA'
 
-version = '1.0.1'
+version = '1.0.2'
 release = '1.0.1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
+    'nbsphinx',
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.todo',
@@ -28,7 +29,10 @@ extensions = [
 ]
 
 templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = [
+    '_build', 'Thumbs.db', 
+    '.DS_Store', '.ipynb_checkpoints'
+    ]
 
 language = 'en'
 
