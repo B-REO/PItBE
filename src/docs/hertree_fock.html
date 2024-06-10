@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hartree-Fock &mdash; PItBE 1.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=292eb321"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="manual module" href="manual.html" />
+    <link rel="prev" title="Welcome to PItBE’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PItBE
+          </a>
+              <div class="version">
+                1.0.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Hartree-Fock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual.html">manual module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chap1.html">Chapter 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="circ_make.html">circ_make</a></li>
+<li class="toctree-l1"><a class="reference internal" href="coeff_make.html">coeff_make</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PItBE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Hartree-Fock</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/hertree_fock.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+inlineMath: [['$’, ‘$’] ],
+displayMath: [ [‘$$’,’$$’], ["[“,”]"] ]
+}
+});
+</script>
+<section id="hartree-fock">
+<h1>Hartree-Fock<a class="headerlink" href="#hartree-fock" title="Link to this heading"></a></h1>
+<p>Hartree-Fockの理論は電子ハミルトニアン$H$に対してスピン軌道の組${x_i}$からなる行列式</p>
+<p>$$
+|\Psi\rangle = |x_1x_2…x_N\rangle
+$$</p>
+<p>が最良の近似をとるような状態を漸近的に求めるものである。<br />
+この理論では次の微分方程式を使って最良の状態を求める。</p>
+<p>$$
+h(1)x_i(1) + \sum_{b\neq{}i}\left[\int{}d\vec{x}<em>2|x_b(2)|^2\vec{r}</em>{12}^{-1}\right]x_i(1) - \sum_{b\neq{}i}\left[\int{}d\vec{x}<em>2x_b(2)^*x_i(2)\vec{r}</em>{12}^{-1}\right]x_b(1) = \epsilon_ix_i(1)
+$$</p>
+<p>ここで$x_i(1)$は$i$番目の軌道に一つ目の電子が占有されていることを表し、$h(1)$は一つ目の電子の運動エネルギー及び核間相互作用を計算するための演算子、残りは電子間相互作用を表す演算子である。</p>
+<p>最後の演算子のうち最初の部分の持つ物理的意味とは2番目の電子との電子間相互作用である。2番目の電子が軌道$x_b(2)$に占有されているとすると微小体積$d\vec{x_2}$中に存在する確率は密度関数より$d\vec{x_2}|x_b(2)|^2$となる。そしてその微小体積中に存在している2番目の電子と1番目の電子の電子感相互作用の平均は$d\vec{x_2}|x_b(2)|^2r_{12}$となる。ゆえに軌道$x_b(2)$に占有されている電子との電子間相互作用は$\int{}d\vec{x}<em>2|x_b(2)|^2\vec{r}</em>{12}^{-1}$となる。これを全ての軌道に対して実行したものが</p>
+<p>$$
+\sum_{b\neq{}i}\left[\int{}d\vec{x}<em>2|x_b(2)|^2\vec{r}</em>{12}^{-1}\right]
+$$</p>
+<p>となる。これを特別に$\mathscr{F}_b(1)$と定義する。また残りの部分は交換演算子$\mathscr{K}_b$を次のように定義することで表現する。</p>
+<p>$$
+\mathscr{K}<em>b(1)x_i(1) = \sum</em>{b\neq{}i}\left[\int{}d\vec{x}<em>2x_b(2)^*x_i(2)\vec{r}</em>{12}^{-1}\right]x_b(1)
+$$</p>
+<p>以上の演算子を用いて前述の微分方程式を書き直すと</p>
+<p>$$
+\left[h(1) + \sum_{b\neq{}i}\mathscr{F}<em>b(1) - \sum</em>{b\neq{}i}\mathscr{K}_b(1)\right] x_i(1) = \epsilon_ix_i(1)
+$$</p>
+<p>と表される。
+この表現では$b\neq{}a$という制限が必ず付属する。しかしこの制限は</p>
+<p>$$
+\mathscr{F}_i(1) - \mathscr{K}_i(1)
+= \int{}d\vec{x}<em>2|x_i(2)|^2\vec{r}</em>{12}^{-1}</p>
+<ul class="simple">
+<li><p>\int{}d\vec{x}<em>2|x_i(2)|^2\vec{r}</em>{12}^{-1}
+= 0
+$$</p></li>
+</ul>
+<p>となることから演算子部分は</p>
+<p>$$
+h(1) + \sum_{b}\left[\mathscr{F}_b(1) - \mathscr{K}_b(1)\right]
+$$</p>
+<p>と変形できる。この演算子の和をFock演算子とよび$f(1)$と表す。このFock演算子をスピン軌道関数の行列式にさせると</p>
+<p>$$
+f|x_i\rangle = \epsilon_i|x_i\rangle
+$$</p>
+<p>となるので左側から$\langle{}x_j|$を作用させると</p>
+<p>$$
+\langle{}x_j|f|x_i\rangle = \epsilon{}<em>i\delta</em>{ji}
+$$</p>
+<p>となる。この結果からFock演算子はスピン軌道関数の基底が張る空間において軌道エネルギーを対角要素に持つ対角行列になることがわかる。</p>
+<p>スレーター行列式に含まれているスピン軌道は次のような形を取る。</p>
+<p>$$
+x_i(\vec{x}) =
+\left{
+\begin{alignedat}{2}<br />
+\phi(\vec{r})\alpha(\sigma) \<br />
+\phi(\vec{r})\beta(\sigma)
+\end{alignedat}
+\right.
+$$</p>
+<p>これを先述の微分方程式に代入する。ここではスピン関数$\alpha(\sigma)$とする。</p>
+<p>$$
+\begin{aligned}
+f(\vec{x}_1)x_i(\vec{x}_1) &amp;= \epsilon_ix_i(\vec{x}_1)\
+f(\vec{x}_1)\phi_i(\vec{r}_1)\alpha(\sigma_1)
+&amp;= \epsilon_i\phi_i(\vec{r}_1)\alpha(\sigma_1)
+\end{aligned}
+$$</p>
+<p>$\epsilon_i$は空間軌道$\phi_i(\vec{r})$のエネルギーでありスピン関数のエネルギーと等しい。ゆえにスピン軌道を消すために左から$\alpha(\sigma)^*$をかけて積分すると</p>
+<p>$$
+\left[\int d\sigma_1\alpha^*(\sigma_1)f(\vec{x}_1)\alpha(\sigma_1)\right]
+\phi_i(\vec{r}_1) = \epsilon_i\phi(\vec{r}_1)
+$$</p>
+<p>ここで$f(\vec{x})$は次のようにかけるので</p>
+<p>$$
+f(\vec{x}_1)
+= h(\vec{r}_1)</p>
+<ul class="simple">
+<li><p>\sum_{b\neq{}i}\left[\int{}d\vec{x}_2|x_b(\vec{x}<em>2)|^2\vec{r}</em>{12}^{-1}\right]</p></li>
+</ul>
+<ul class="simple">
+<li><p>\sum_{b\neq{}i}\left[\int{}d\vec{x}_2x_b(\vec{x}_2)^*x_i(\vec{x}<em>2)\vec{r}</em>{12}^{-1}\right]
+$$</p></li>
+</ul>
+<p>閉殻Fock演算子$f(r)$として</p>
+<p>$$
+f(\vec{r}) = \int d\sigma\alpha^*(\sigma)f(\vec{x})\alpha(\sigma)
+$$</p>
+<p>を定義して代入すると</p>
+<p>$$
+\begin{split}
+\left[\int d\sigma_1\alpha^<em>(\sigma_1)f(\vec{x}_1)\alpha(\sigma_1)\right]
+\phi_i(\vec{r}_1)
+&amp;= f(\vec{r}_1)\phi_i(\vec{r}_1)\
+&amp;= h(r_1)\phi_i(\vec{r}_1) \
+&amp;\quad+ \sum_b^N\int d\sigma_1d\vec{x}_2\alpha^</em>(\sigma_1)x_b^<em>(\vec{x}<em>2)r</em>{12}^{-1}x_b(\vec{x}_2)\alpha(\sigma_1)\phi_i(\vec{r}_1)\
+&amp;\quad- \sum_b^N\int d\sigma_1d\vec{x}_2\alpha^</em>(\sigma_1)x_b^*(\vec{x}<em>2)r</em>{12}^{-1}x_b(\vec{x}_1)\alpha(\sigma_1)\phi_i(\vec{r}_2)\
+&amp;= \epsilon_i\phi_i(\vec{r}_1)\
+\end{split}
+$$</p>
+<p>現在扱っているのは閉殻系であるので占有スピン軌道については$\alpha$スピン軌道を持つものと$\beta$スピン軌道を持つものが同数ずつ含まれているので</p>
+<p>$$
+\sum_b^N = \sum_{b^*}^{N/2} + \sum_{\bar{b}}^{N/2}
+$$</p>
+<p>となる。これを用いて先ほどの方程式を書き直すと</p>
+<p>$$
+\begin{split}
+f(\vec{r}_1)\phi_i(\vec{r}_1)
+&amp;= h(r_1)\phi_i(\vec{r}_1) \
+&amp;\quad+ \sum_b^{N/2}\int d\sigma_1d\sigma_2d\vec{r}_2\alpha^<em>(\sigma_1)\phi_b^</em>(\vec{r}<em>2)\alpha^*(\sigma_2)r</em>{12}^{-1}\phi_b(\vec{r}_2)\alpha(\sigma_2)\alpha(\sigma_1)\phi_i(\vec{r}_1)\
+&amp;\quad+ \sum_b^{N/2}\int d\sigma_1d\sigma_2d\vec{r}_2\alpha^<em>(\sigma_1)\phi_b^</em>(\vec{r}<em>2)\beta^*(\sigma_2)r</em>{12}^{-1}\phi_b(\vec{r}_2)\beta(\sigma_2)\alpha(\sigma_1)\phi_i(\vec{r}_1)\
+&amp;\quad- \sum_b^{N/2}\int d\sigma_1d\sigma_2d\vec{r}_2\alpha^<em>(\sigma_1)\phi_b^</em>(\vec{r}<em>2)\alpha^*(\sigma_2)r</em>{12}^{-1}\phi_b(\vec{r}_1)\alpha(\sigma_1)\alpha(\sigma_2)\phi_i(\vec{r}_2)\
+&amp;\quad- \sum_b^{N/2}\int d\sigma_1d\sigma_2d\vec{r}_2\alpha^<em>(\sigma_1)\phi_b^</em>(\vec{r}<em>2)\beta^*(\sigma_2)r</em>{12}^{-1}\phi_b(\vec{r}_1)\beta(\sigma_1)\alpha(\sigma_1)\phi_i(\vec{r}_2)\
+&amp;= \epsilon_i\phi_i(\vec{r}_1)
+\end{split}
+$$</p>
+<p>となる。ここでスピン軌道の規格直行性を考えると上の式は</p>
+<p>$$
+\begin{split}
+f(\vec{r}_1)\phi_i(\vec{r}_1)
+&amp;= h(r_1)\phi_i(\vec{r}_1) \
+&amp;\quad+ \sum_b^{N/2}\int d\vec{r}_2\phi_b^<em>(\vec{r}<em>2)r</em>{12}^{-1}\phi_b(\vec{r}_2)\phi_i(\vec{r}_1)\
+&amp;\quad+ \sum_b^{N/2}\int d\vec{r}_2\phi_b^</em>(\vec{r}<em>2)r</em>{12}^{-1}\phi_b(\vec{r}_2)\phi_i(\vec{r}_1)\
+&amp;\quad- \sum_b^{N/2}\int d\vec{r}_2\phi_b^*(\vec{r}<em>2)r</em>{12}^{-1}\phi_b(\vec{r}_1)\phi_i(\vec{r}_2)\
+&amp;= \epsilon_i\phi_i(\vec{r}_1)
+\end{split}
+$$</p>
+<p>へと変形される。さらに二つのクーロン積は等しいので</p>
+<p>$$
+\begin{split}
+f(\vec{r}_1)\phi_i(\vec{r}_1)
+&amp;= h(r_1)\phi_i(\vec{r}_1) \
+&amp;\quad+ 2\left[\sum_b^{N/2}\int d\vec{r}_2\phi_b^<em>(\vec{r}<em>2)r</em>{12}^{-1}\phi_b(\vec{r}_2)\phi_i(\vec{r}_1)\right]\
+&amp;\quad- \sum_b^{N/2}\int d\vec{r}_2\phi_b^</em>(\vec{r}<em>2)r</em>{12}^{-1}\phi_i(\vec{r}_2)\phi_b(\vec{r}_1)\
+&amp;= \epsilon_i\phi_i(\vec{r}_1)
+\end{split}
+$$</p>
+<p>となる。このことから閉殻Fock演算子は</p>
+<p>$$
+f(\vec{r}_1)
+= h(\vec{r}_1)</p>
+<ul class="simple">
+<li><p>\sum_b^{N/2}\int d\vec{r}_2\phi_b^*(\vec{r}<em>2)r</em>{12}^{-1}
+(2\phi_b(\vec{r}_2) - \phi_i(\vec{r}_2))
+$$</p></li>
+</ul>
+<p>と書くこともできる。</p>
+<p>以上までの操作によって分子軌道計算は次の方程式</p>
+<p>$$
+\begin{equation}
+f(\vec{r}_1)\phi_i(\vec{r}_1) = \epsilon_i\phi_i(\vec{r}_1)
+\end{equation}
+$$</p>
+<p>を解くことに帰着する。これを解くために次のように既知の基底関数による線型結合として空間軌道を表現する。</p>
+<p>$$
+\begin{equation*}
+\phi_i = \sum_{\kappa=1}^KC_{\kappa{}i}\psi_\kappa\quad i=1, 2, \dots,K
+\end{equation*}
+$$</p>
+<p>この基底関数の取り方如何で最終的な計算結果の精度が決まる。しかし精度を上げるために複雑な基底関数を用いればそれだけ計算量が増えることは留意しなければならない。</p>
+<p>では早速この線型結合を代入した方程式を変形させていく。</p>
+<p>$$
+\begin{aligned}
+f(\vec{r}<em>1)\phi_i(\vec{r}<em>1) &amp;= \epsilon_i\phi_i(\vec{r}<em>1)\
+f(\vec{r}<em>1)\sum</em>{\kappa=1}^KC</em>{\kappa{}i}\psi</em>\kappa(\vec{r}<em>1)
+&amp;= \epsilon_i\sum</em>{\kappa=1}^KC</em>{\kappa{}i}\psi_\kappa(\vec{r}_1)\
+\end{aligned}
+$$</p>
+<p>両辺を$\psi_\xi(\vec{r}_1)^*$（$\xi$は$1$から$K$までの任意の数）を左から作用させた上で積分すると</p>
+<p>$$
+\begin{equation*}
+\sum_\kappa^KC_{\kappa{}i}\int{}d\vec{r}<em>1\psi</em>\xi^<em>(\vec{r}<em>1)f(\vec{r}<em>1)\psi</em>\kappa(\vec{r}<em>1)
+= \epsilon_i\sum</em>\kappa^KC</em>{\kappa{}i}
+\int{}d\vec{r}<em>1\psi</em>\xi^</em>(\vec{r}<em>1)\psi</em>\kappa(\vec{r}_1)
+\end{equation*}
+$$</p>
+<p>ここで次の二つの行列を定義する。まず一つ目は基底関数間の重なり積分結果を要素にもつ重なり行列$S$。そしてもう一つは閉殻Fock演算子を作用させた結果を積分したものを要素にもつFock行列$F$。それぞれの要素は</p>
+<p>$$
+\begin{aligned}
+S_{\xi\kappa} &amp;= \int{}d\vec{r}<em>1\psi</em>\xi^<em>(\vec{r}<em>1)\psi</em>\kappa(\vec{r}<em>1)\
+F</em>{\xi\kappa} &amp;= \int{}d\vec{r}<em>1\psi</em>\xi^</em>(\vec{r}_1)f(\vec{r}<em>1)\psi</em>\kappa(\vec{r}_1)
+\end{aligned}
+$$</p>
+<p>特筆すべき点として重なり行列は基底行列が規格直交化している場合は単位行列になる。</p>
+<p>これらの行列を用いて先ほどの微分方程式を書き直した下の式がRoothan方程式であり、解くべき方程式である。</p>
+<p>$$
+FC = SC\vec{\epsilon}
+$$</p>
+<p>この方程式を解くために密度行列という概念を導入する。</p>
+<p>空間波動関数$\phi_a(\vec{r})$によって記述された1個の電子を微小空間
+$d\vec{r}$で観測される確率は$|\phi_a(\vec{r})|^2d\vec{r}$であるので閉殻分子に含まれる
+$N$個の電子の密度関数は</p>
+<p>$$
+\rho(\vec{r}) = 2\sum_a^{N/2}|\phi_a(\vec{r})|^2
+$$</p>
+<p>となる。これを全空間で積分すると</p>
+<p>$$
+\int d\vec{r}\rho(\vec{r})
+= 2\sum_{a}^{N/2}\int d\vec{r}|\phi_a(\vec{r})|^2
+= 2\sum_{a}^{N/2}1 = N
+$$</p>
+<p>となり、全電子数と等しいことがわかる。ここに先ほどの基底関数による線型結合を代入すると</p>
+<p>$$
+\begin{split}
+\rho(\vec{r})
+&amp;= 2\sum_a^{N/2}|\phi_a(\vec{r})|^2\
+&amp;= 2\sum_a^{N/2}\left(\sum_jC_{ja}\psi_j(\vec{r})\right)^<em>\left(\sum_iC_{ia}\psi_i(\vec{r})\right)\
+&amp;= \sum_{i,j}\left[2\sum_a^{N/2}C_{ia}C_{ja}^</em>\right]
+\phi_i(\vec{r})\phi_j(\vec{r})^<em>\
+&amp;= \sum_{i,j}P_{ij}\phi_i(\vec{r})\phi_j(\vec{r})^</em>\
+\end{split}
+$$</p>
+<p>この式変形中に用いた$P_{ij}=2\sum_a^{N/2}C_{ia}C_{ja}^*$を要素とする行列を密度行列と定義される。これを用いて閉殻Fock演算子を書き直すと</p>
+<p>$$
+f(\vec{r}_1)
+= h(\vec{r}_1)</p>
+<ul class="simple">
+<li><p>\frac{1}{2}\sum_{i,j}P_{ij}\left(
+2\left[\int d\vec{r}_2\psi_j^*(\vec{r}<em>2)r</em>{12}^{-1}\psi_i(\vec{r}_2)\right]</p></li>
+</ul>
+<ul class="simple">
+<li><p>\int d\vec{r}_2\psi_j^*(\vec{r}<em>2)r</em>{12}^{-1}\psi_a(\vec{r}_2)\right)
+$$</p></li>
+</ul>
+<p>となる。この結果はハートリー・フォック法の過程を示唆している。まず密度行列を仮定して閉殻Fock演算子を計算する。
+その得られた計算結果を用いて1電子シュレディンガー方程式を解き電子状態についての情報を得る。
+そして得られた電子状態からより精度の高い密度行列を計算する。それを元に再度閉殻Fock演算子を計算し
+1電子シュレディンガー方程式を解く。
+このように何度も繰り返すことで漸近的に精度を向上させていく。</p>
+<p>以上の計算を実行するために閉殻Fock演算子の計算をより具体的にしていく。閉殻Fock演算子の要素$F_{\xi\kappa}$は</p>
+<p>$$
+\begin{split}
+F_{\xi\kappa}
+&amp;= \int d\vec{r}<em>1\psi</em>\xi^<em>(\vec{r}_1)f(\vec{r}<em>1)\psi</em>\kappa(\vec{r}_1)\
+&amp;= \int d\vec{r}<em>1\psi</em>\xi^</em>(\vec{r}_1)h(\vec{r}<em>1)\psi</em>\kappa(\vec{r}<em>1)\
+&amp;\quad+\sum</em>{b}^{N/2}\int d\vec{r}<em>1\psi</em>\xi^*(\vec{r}_1)
+\left[2J_b(\vec{r}<em>1)-K_b(\vec{r}<em>1)\right]\psi</em>\kappa(\vec{r}<em>1)\
+&amp;= H</em>{\xi\kappa}^{core} + \sum</em>{b}^{N/2}2(\xi\kappa|bb) - (\xi{}b|b\kappa)
+\end{split}
+$$</p>
+<p>である。（$H_{\xi\kappa}^{core} = \int d\vec{r}<em>1\psi</em>\xi^*(\vec{r}_1)h(\vec{r}<em>1)\psi</em>\kappa(\vec{r}_1)$）第一項は電子の運動エネルギーと電子核間相互作用を表している。そこでこの二つを分解して</p>
+<p>運動エネルギー:</p>
+<p>$$
+T_{\xi\kappa}
+=\int d\vec{r}<em>1\psi</em>\xi^*(\vec{r}<em>1)\left[-\frac{1}{2}\nabla^2_1\right]\psi</em>\kappa(\vec{r}_1)
+$$</p>
+<p>電子核間相互作用:</p>
+<p>$$
+V_{\xi\kappa}^{nucl}
+=\int d\vec{r}<em>1\psi</em>\xi^*(\vec{r}_1)\left[-\sum_A\frac{Z_A}{|\vec{r}_1-\vec{R}<em>A|}\right]\psi</em>\kappa(\vec{r}_1)
+$$</p>
+<p>とする。それぞれの成分からわかるように基底関数が決まれば$H_{\xi\kappa}^{core}$は計算可能である。さらに基底関数のみに依存するので計算を何度も繰り返しても値は変わらない。</p>
+<p>では残りの部分はどうか。密度関数の概念を導入すると</p>
+<p>$$
+\begin{split}
+&amp;\quad\sum_{b}^{N/2}2(\xi\kappa|bb) - (\xi{}b|b\kappa)\
+&amp;= \sum_{b}^{N/2}\sum_{ij}C_{ia}C_{ja}^*
+\left[2(\xi\kappa|ji)-(\xi{}i|j\kappa)\right]\
+&amp;= \sum_{ij}P_{ij}\left[2(\xi\kappa|ji)-\frac{1}{2}(\xi{}i|j\kappa)\right]\
+\end{split}
+$$</p>
+<p>であり、$(\xi\kappa|ji)$は</p>
+<p>$$
+(\xi\kappa|ji)
+= \int{}d\vec{r}_1d\vec{r}<em>2
+\psi</em>\xi^<em>(\vec{r}<em>1)\psi</em>\kappa(\vec{r}<em>1)r</em>{12}^{-1}
+\psi_j^</em>(\vec{r}_1)\psi_i(\vec{r}_1)
+$$</p>
+<p>という2電子積分を表している。これからわかるようにこの積分を実行すると膨大な組み合わせを処理する必要がある。これがハートリー・フォック法を実行する上で最大の難題となっている。</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to PItBE’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="manual.html" class="btn btn-neutral float-right" title="manual module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Reo BABA.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

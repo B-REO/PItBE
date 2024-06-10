@@ -1,0 +1,101 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# cont_order"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### 概要"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "この関数は入力値を任意の桁数の2進数表記に変換する"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### 引数一覧"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "|argument name|type|role|\n",
+    "|---|---|---|\n",
+    "|order|int|2進数に変換したい値|\n",
+    "|rank|int|2進数変換した結果を表記する桁数|"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### 戻り値"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "cont_list（list）:\n",
+    "          2進数変換後のそれぞれの桁での値を格納したlist\\\n",
+    "          格納する順序は1桁目から始まる\\\n",
+    "          格納されている値の型はstr"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Python code"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "```python\n",
+    "def cont_order(order, rank):\n",
+    "    by_order = format(order, ('0' + str(rank) + 'b'))\n",
+    "    cont_list = []\n",
+    "    for i in range(len(by_order)):\n",
+    "        cont_list.append(int(by_order[i]))\n",
+    "    return cont_list\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### 実行例"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "language_info": {
+   "name": "python"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

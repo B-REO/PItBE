@@ -8,7 +8,18 @@
 
 import os
 import sys
-#sys.path.insert(0, os.path.abspath('../'))
+from recommonmark.parser import CommonMarkParser
+from recommonmark.transform import AutoStructify
+
+sys.path.insert(0, os.path.abspath('../'))
+
+github_doc_root = 'https://github.com/rtfd/recommonmark/tree/master/doc/'
+def setup(app):
+    app.add_config_value('recommonmark_config',{
+            'url_resolver': lambda url: github_doc_root + url,
+            'auto_toc_tree_section': 'Contents',
+            }, True)
+    app.add_transform(AutoStructify)
 
 project = 'PItBE'
 copyright = '2024, Reo BABA'
@@ -22,6 +33,7 @@ release = '1.0.1'
 
 extensions = [
     'nbsphinx',
+    'myst_parser',
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.todo',
@@ -33,6 +45,15 @@ exclude_patterns = [
     '_build', 'Thumbs.db', 
     '.DS_Store', '.ipynb_checkpoints'
     ]
+
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown'
+}
+
+source_parser = {
+    '.md': CommonMarkParser
+}
 
 language = 'en'
 

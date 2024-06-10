@@ -7,12 +7,10 @@ Welcome to PItBE's documentation!
 =======================================
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :caption: Contents:
 
-   modules
-   ./chap1.rst
-   ../bankai.ipynb
+   ./style
 
 
 Indices and tables

@@ -1,0 +1,5 @@
+google
+======
+
+.. toctree::
+    ./manual
