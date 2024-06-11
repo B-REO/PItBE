@@ -6,6 +6,138 @@
    "source": [
     "# total_search"
    ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### 概要"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "この関数では線形結合を構成するパウリ行列積の一覧から量子回路上で必要なビット数を算出する"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### 引数一覧"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "|argument name|type|role|\n",
+    "|---|---|---|\n",
+    "|ope_list|list(elements:str)|作用させるパウリ行列積の一覧|"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### 戻り値"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "np.array(bit_list).max()+1（str）:作用先のビット番号のうち最大のものに1を足して出力する\\\n",
+    "1を足しているのは作用先のビット番号が0から始まるためである"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Python code"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "```python\n",
+    "def total_search(ope_list):\n",
+    "    bit_list = []\n",
+    "    app_list = \"\"\n",
+    "    for i in range(len(ope_list) - 1):\n",
+    "        for j in range(len(ope_list[i+1])-1):\n",
+    "            app_switch = 0\n",
+    "            if ope_list[i+1][j+1] == \"X\":\n",
+    "                app_switch = 1\n",
+    "            if ope_list[i+1][j+1] == \"Y\":\n",
+    "                app_switch = 1\n",
+    "            if ope_list[i+1][j+1] == \"Z\":\n",
+    "                app_switch = 1\n",
+    "            if ope_list[i+1][j+1] == \"I\":\n",
+    "                app_switch = 1\n",
+    "            if app_switch == 0:\n",
+    "                app_list += str(ope_list[i+1][j+1])\n",
+    "            if app_switch == 1:\n",
+    "                bit_list.append(int(app_list))\n",
+    "                app_list = \"\"\n",
+    "        bit_list.append(int(app_list))\n",
+    "        app_list = \"\"\n",
+    "    return np.array(bit_list).max()+1\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### 実行例"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import pitbe"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "4\n"
+     ]
+    }
+   ],
+   "source": [
+    "ope = ['', 'X0X1Y2Y3', 'X0Y1Y2X3', 'Y0X1X2Y3', 'Y0Y1X2X3', 'Z0', 'Z0Z1', 'Z0Z2', 'Z0Z3', 'Z1', 'Z1Z2', 'Z1Z3', 'Z2', 'Z2Z3', 'Z3']\n",
+    "main = pitbe.total_search(ope)\n",
+    "print(main)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### 注意点"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "前述の通り入力情報は本パッケージ内の出力結果の利用を想定しているので異なる様式を用いた場合望んだ出力結果にならないこともあるので注意してほしい"
+   ]
   }
  ],
  "metadata": {

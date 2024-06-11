@@ -61,7 +61,14 @@
 <li class="toctree-l3"><a class="reference internal" href="mat_make.html">mat_make</a></li>
 <li class="toctree-l3"><a class="reference internal" href="normlize.html">normlize</a></li>
 <li class="toctree-l3"><a class="reference internal" href="read_jw.html">read_jw</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">vec_make</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">vec_make</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#概要">概要</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#引数一覧">引数一覧</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#戻り値">戻り値</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Python-code">Python code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#注意点">注意点</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -96,6 +103,60 @@
              
   <section id="vec_make">
 <h1>vec_make<a class="headerlink" href="#vec_make" title="Link to this heading"></a></h1>
+<section id="概要">
+<h2>概要<a class="headerlink" href="#概要" title="Link to this heading"></a></h2>
+<p>この関数は関数「mat_make」内で行列要素を計算するのに用いる</p>
+</section>
+<section id="引数一覧">
+<h2>引数一覧<a class="headerlink" href="#引数一覧" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>argument name</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>role</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>gate_inf</p></td>
+<td><p>str</p></td>
+<td><p>「mat_make」で扱う行列の要素が格納されたlist</p></td>
+</tr>
+<tr class="row-odd"><td><p>zero_one</p></td>
+<td><p>list(elements:int)</p></td>
+<td><p>「mat_make」の行列要素に作用させる係数を格納したlist</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="戻り値">
+<h2>戻り値<a class="headerlink" href="#戻り値" title="Link to this heading"></a></h2>
+<div class="line-block">
+<div class="line">app_lst（list）:計算結果を格納するlist</div>
+<div class="line">格納されている要素はfloat型</div>
+</div>
+</section>
+<section id="Python-code">
+<h2>Python code<a class="headerlink" href="#Python-code" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vec_make</span><span class="p">(</span><span class="n">ele</span><span class="p">,</span> <span class="n">coflst</span><span class="p">):</span>
+    <span class="n">app_lst</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cor_list_one</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cor_list_two</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coflst</span><span class="p">)):</span>
+        <span class="n">corlen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ele</span><span class="p">)</span><span class="o">//</span><span class="nb">len</span><span class="p">(</span><span class="n">coflst</span><span class="p">)</span>
+        <span class="n">cor_list_one</span> <span class="o">=</span> <span class="n">ele</span><span class="p">[</span><span class="n">corlen</span><span class="o">*</span><span class="n">i</span><span class="p">:</span> <span class="n">corlen</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="n">corlen</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">cor_list_two</span> <span class="o">=</span> <span class="n">ele</span><span class="p">[</span><span class="n">corlen</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="n">corlen</span><span class="o">//</span><span class="mi">2</span><span class="p">:</span> <span class="n">corlen</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="n">corlen</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cor_list_one</span><span class="p">)):</span>
+            <span class="n">app_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">cor_list_one</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">/</span><span class="n">coflst</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cor_list_two</span><span class="p">)):</span>
+            <span class="n">app_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cor_list_two</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">coflst</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">app_lst</span>
+</pre></div>
+</div>
+</section>
+<section id="注意点">
+<h2>注意点<a class="headerlink" href="#注意点" title="Link to this heading"></a></h2>
+<p>この関数は「mat_maker」内のみで用いることを想定している</p>
+</section>
 </section>
 
 
