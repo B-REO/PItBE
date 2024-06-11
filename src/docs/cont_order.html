@@ -25,7 +25,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="mat_make" href="mat_make.html" />
+    <link rel="next" title="total_search" href="total_search.html" />
     <link rel="prev" title="coeff_make" href="coeff_make.html" /> 
 </head>
 
@@ -66,6 +66,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#実行例">実行例</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="total_search.html">total_search</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mat_make.html">mat_make</a></li>
 <li class="toctree-l3"><a class="reference internal" href="normlize.html">normlize</a></li>
 <li class="toctree-l3"><a class="reference internal" href="read_jw.html">read_jw</a></li>
@@ -133,7 +134,6 @@
 <h2>戻り値<a class="headerlink" href="#戻り値" title="Link to this heading"></a></h2>
 <div class="line-block">
 <div class="line">cont_list（list）: 2進数変換後のそれぞれの桁での値を格納したlist</div>
-<div class="line">格納する順序は1桁目から始まる</div>
 <div class="line">格納されている値の型はstr</div>
 </div>
 </section>
@@ -151,12 +151,28 @@
 <section id="実行例">
 <h2>実行例<a class="headerlink" href="#実行例" title="Link to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pitbe</span>
 </pre></div>
 </div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pitbe</span><span class="o">.</span><span class="n">cont_order</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[0, 0, 0, 1, 0, 1]
+</pre></div></div>
 </div>
 </section>
 </section>
@@ -166,7 +182,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="coeff_make.html" class="btn btn-neutral float-left" title="coeff_make" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="mat_make.html" class="btn btn-neutral float-right" title="mat_make" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="total_search.html" class="btn btn-neutral float-right" title="total_search" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

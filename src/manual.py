@@ -174,7 +174,6 @@ def cont_order(order, rank):
     Returns:
         cont_list（list）:
           2進数変換後のそれぞれの桁での値を格納したlist
-          格納する順序は1桁目から始まる
           格納されている値の型はstr
 
     Examples:
@@ -189,7 +188,7 @@ def cont_order(order, rank):
     return cont_list
 
 
-def main_research(ope_list):
+def total_search(ope_list):
     """main_research
 
     この関数では線形結合を構成するパウリ行列積の一覧から
@@ -207,7 +206,7 @@ def main_research(ope_list):
           1を足しているのは作用先のビット番号が0から始まるためである
 
     Examples:
-        >>> main = main_research(ope)
+        >>> main = total_search(ope)
         >>> print(main)
         6
 

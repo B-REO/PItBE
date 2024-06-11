@@ -11,7 +11,7 @@ Welcome to PItBE's documentation!
    :caption: Contents:
 
    ./style
-
+   ./bankai.ipynb
 
 Indices and tables
 ==================

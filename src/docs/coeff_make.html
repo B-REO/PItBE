@@ -7,6 +7,7 @@
   <title>coeff_make &mdash; PItBE 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
 
   
   <!--[if lt IE 9]>
@@ -65,6 +66,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="cont_order.html">cont_order</a></li>
+<li class="toctree-l3"><a class="reference internal" href="total_search.html">total_search</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mat_make.html">mat_make</a></li>
 <li class="toctree-l3"><a class="reference internal" href="normlize.html">normlize</a></li>
 <li class="toctree-l3"><a class="reference internal" href="read_jw.html">read_jw</a></li>
@@ -106,9 +108,27 @@
 <section id="概要">
 <h2>概要<a class="headerlink" href="#概要" title="Link to this heading"></a></h2>
 <p>この関数では本パッケージ内の関数「mat_make」でもちいる引数を作成する</p>
-<p>この関数は入力するvecのlengthによって変化する方程式を解いている
-例えばlengthが8の場合は以下のような方程式を解いている ここでは<span class="math notranslate nohighlight">\(a_i\)</span>が入力値であり、<span class="math notranslate nohighlight">\(\alpha_i\)</span>が出力値である $$</p>
-<p>$$</p>
+<div class="line-block">
+<div class="line">この関数は入力するvecのlengthによって変化する方程式を解いている</div>
+<div class="line">例えばlengthが8の場合は以下のような方程式を解いている</div>
+<div class="line">ここでは<span class="math notranslate nohighlight">\(a_i\)</span>が入力値であり、<span class="math notranslate nohighlight">\(\alpha_i\)</span>が出力値である</div>
+</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+    &amp;\alpha_1\sum_{n=0}^{7}{}a_{0n}^2
+    - \alpha_1^{-1}\sum_{n=8}^{15}{}a_{0n}^2 = 0\\
+    &amp;\alpha_2\sum_{n=0}^{3}{}a_{0n}^2 - \alpha_2^{-1}\sum_{n=4}^{7}{}a_{0n}^2 +\alpha_3 \sum_{n=8}^{11}{}a_{0n}^2
+    - \alpha_3^{-1}\sum_{n=12}^{15}{}a_{0n}^2 = 0\\
+    &amp;\alpha_1\alpha_2\sum_{n=0}^{3}{}a_{0n}^2
+    - \alpha_1\alpha_2^{-1}\sum_{n=4}^{7}{}a_{0n}^2 +
+    \alpha_1^{-1}\alpha_3 \sum_{n=8}^{11}{}a_{0n}^2
+    - \alpha_1^{-1}\alpha_3^{-1}\sum_{n=12}^{15}{}a_{0n}^2 = 0\\
+    &amp;\sum_{n=0}^3\Biggl(\alpha_{n+4}\sum_{l=4n}^{4n+1}a_{02l}^2+\alpha_{n+4}^{-1}\sum_{l=4n+2}^{4n+3}a_{02l}^2\Biggr) = 0\\
+    &amp;\alpha_1\sum_{n=0}^1\Biggl(\alpha_{n+4}\sum_{l=4n}^{4n+1}a_{02l}^2+\alpha_{n+4}^{-1}\sum_{l=4n+2}^{4n+3}a_{02l}^2\Biggr) + \alpha_1^{-1}\sum_{n=2}^3\Biggl(\alpha_{n+4}\sum_{l=4n}^{4n+1}a_{02l}^2+\alpha_{n+4}^{-1}\sum_{l=4n+2}^{4n+3}a_{02l}^2\Biggr) = 0\\
+    &amp;\sum_{n=0}^1\alpha_{n+1}\Biggl(\alpha_{2n+4}\sum_{l=0}^{1}a_{0(8n+l)}^2+\alpha_{2n+4}^{-1}\sum_{l=0}^{1}a_{{02(8n+l+2)}}^2\Biggr) + \sum_{n=0}^1\alpha_{n+1}^{-1}\Biggl(\alpha_{2n+5}\sum_{l=0}^{1}a_{0(8n+l+5)}^2+\alpha_{2n+2}^{-1}\sum_{l=0}^{1}a_{{02(8n+l+6)}}^2\Biggr) = 0\\
+    &amp;\sum_{n=0}^1\alpha_{1}^{(-1)^n}\alpha_{n+1}\Biggl(\alpha_{2n+4}\sum_{l=0}^{1}a_{0(8n+l)}^2+\alpha_{2n+4}^{-1}\sum_{l=0}^{1}a_{{02(8n+l+2)}}^2\Biggr)
+    + \sum_{n=0}^1\alpha_{1}^{(-1)^n}\alpha_{n+1}^{-1}\Biggl(\alpha_{2n+5}\sum_{l=0}^{1}a_{0(8n+l+5)}^2+\alpha_{2n+2}^{-1}\sum_{l=0}^{1}a_{{02(8n+l+6)}}^2\Biggr) = 0\\
+\end{aligned}\end{split}\]</div>
 </section>
 <section id="引数一覧">
 <h2>引数一覧<a class="headerlink" href="#引数一覧" title="Link to this heading"></a></h2>
@@ -165,6 +185,32 @@
 </section>
 <section id="実行例">
 <h2>実行例<a class="headerlink" href="#実行例" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pitbe</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">input_vector</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.433</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.433</span><span class="p">,</span> <span class="mf">0.433</span><span class="p">,</span> <span class="mf">0.3536</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pitbe</span><span class="o">.</span><span class="n">coeff_make</span><span class="p">(</span><span class="n">input_vector</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[1.483163853864426], [1.3228881288499281, 0.5590366356510099]]
+</pre></div></div>
+</div>
 </section>
 </section>
 

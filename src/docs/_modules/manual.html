@@ -47,8 +47,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../manual.html">manual module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chap1.html">Chapter 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../style.html">style</a></li>
 </ul>
 
         </div>
@@ -260,7 +259,6 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        cont_list（list）:</span>
 <span class="sd">          2進数変換後のそれぞれの桁での値を格納したlist</span>
-<span class="sd">          格納する順序は1桁目から始まる</span>
 <span class="sd">          格納されている値の型はstr</span>
 
 <span class="sd">    Examples:</span>
@@ -276,9 +274,9 @@
 
 
 
-<div class="viewcode-block" id="main_research">
-<a class="viewcode-back" href="../manual.html#manual.main_research">[docs]</a>
-<span class="k">def</span> <span class="nf">main_research</span><span class="p">(</span><span class="n">ope_list</span><span class="p">):</span>
+<div class="viewcode-block" id="total_search">
+<a class="viewcode-back" href="../manual.html#manual.total_search">[docs]</a>
+<span class="k">def</span> <span class="nf">total_search</span><span class="p">(</span><span class="n">ope_list</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;main_research</span>
 
 <span class="sd">    この関数では線形結合を構成するパウリ行列積の一覧から</span>
@@ -296,7 +294,7 @@
 <span class="sd">          1を足しているのは作用先のビット番号が0から始まるためである</span>
 
 <span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt; main = main_research(ope)</span>
+<span class="sd">        &gt;&gt;&gt; main = total_search(ope)</span>
 <span class="sd">        &gt;&gt;&gt; print(main)</span>
 <span class="sd">        6</span>
 

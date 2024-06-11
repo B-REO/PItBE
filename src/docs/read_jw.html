@@ -7,6 +7,7 @@
   <title>read_jw &mdash; PItBE 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
 
   
   <!--[if lt IE 9]>
@@ -58,9 +59,18 @@
 <li class="toctree-l3"><a class="reference internal" href="circ_make.html">circ_make</a></li>
 <li class="toctree-l3"><a class="reference internal" href="coeff_make.html">coeff_make</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cont_order.html">cont_order</a></li>
+<li class="toctree-l3"><a class="reference internal" href="total_search.html">total_search</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mat_make.html">mat_make</a></li>
 <li class="toctree-l3"><a class="reference internal" href="normlize.html">normlize</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">read_jw</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">read_jw</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#概要">概要</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#引数一覧">引数一覧</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#戻り値">戻り値</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Python-code">Python code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#実行例">実行例</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#注意点">注意点</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="vec_make.html">vec_make</a></li>
 </ul>
 </li>
@@ -96,6 +106,150 @@
              
   <section id="read_jw">
 <h1>read_jw<a class="headerlink" href="#read_jw" title="Link to this heading"></a></h1>
+<section id="概要">
+<h2>概要<a class="headerlink" href="#概要" title="Link to this heading"></a></h2>
+<p>この関数は正方行列のパウリ行列積の線型結合による表現を入力情報とし、係数部分と行列積部分に分解し出力するものである</p>
+</section>
+<section id="引数一覧">
+<h2>引数一覧<a class="headerlink" href="#引数一覧" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>argument name</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>role</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>jw_inf</p></td>
+<td><p>list(elements:str)</p></td>
+<td><p>正方行列のパウリ行列の線形結合による表現</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="戻り値">
+<h2>戻り値<a class="headerlink" href="#戻り値" title="Link to this heading"></a></h2>
+<div class="line-block">
+<div class="line">num_list（list）:線型結合で用いる係数を格納したlist</div>
+<div class="line">各要素はfloat型をとる</div>
+<div class="line">ope_list（list）:線型結合で用いるパウリ行列積を格納したlist</div>
+<div class="line">各要素はstr型をとる</div>
+</div>
+</section>
+<section id="Python-code">
+<h2>Python code<a class="headerlink" href="#Python-code" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_jw</span><span class="p">(</span><span class="n">jw_inf</span><span class="p">):</span>
+    <span class="n">read_counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">minus_counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">plus_counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">sub_num_list</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">ope_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">sub_ope_list</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">e_sub</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">jw_inf</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;(&quot;</span><span class="p">:</span>
+            <span class="n">read_counter</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;[&quot;</span><span class="p">:</span>
+            <span class="n">read_counter</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;+&quot;</span><span class="p">:</span>
+            <span class="n">read_counter</span> <span class="o">=</span> <span class="mi">3</span>
+            <span class="n">plus_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;]&quot;</span><span class="p">:</span>
+            <span class="n">read_counter</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">elif</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;e&quot;</span><span class="p">:</span>
+            <span class="n">read_counter</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="k">if</span> <span class="n">read_counter</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">one_counter</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;+&quot;</span><span class="p">:</span>
+                <span class="n">one_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;e&quot;</span><span class="p">:</span>
+                <span class="n">one_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span>
+                <span class="n">one_counter</span> <span class="o">+=</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+                <span class="n">one_counter</span> <span class="o">+=</span> <span class="mi">3</span>
+            <span class="k">if</span> <span class="n">one_counter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">sub_num_list</span> <span class="o">+=</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">one_counter</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">true_add_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sub_num_list</span><span class="p">)</span>
+                <span class="n">sub_num_list</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">one_counter</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">minus_counter</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">read_counter</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">sub_switch</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;]&quot;</span><span class="p">:</span>
+                <span class="n">sub_switch</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; &quot;</span><span class="p">:</span>
+                <span class="n">sub_switch</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">sub_switch</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">sub_ope_list</span> <span class="o">+=</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">read_counter</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">plus_counter</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">len_snl</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sub_num_list</span><span class="p">)</span>
+            <span class="n">add_ele</span> <span class="o">=</span> <span class="n">true_add_num</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">sub_num_list</span><span class="p">))</span><span class="o">/</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">len_snl</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">e_sub</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">add_ele</span> <span class="o">*=</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="nb">int</span><span class="p">(</span><span class="n">e_sub</span><span class="p">))</span>
+            <span class="n">num_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">add_ele</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="n">minus_counter</span><span class="p">)</span>
+            <span class="n">e_sub</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">sub_num_list</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">read_counter</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">minus_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">read_counter</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">ope_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub_ope_list</span><span class="p">)</span>
+            <span class="n">sub_ope_list</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">read_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">read_counter</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="n">e_switch</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;0&quot;</span><span class="p">:</span>
+                <span class="n">e_switch</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;+&quot;</span><span class="p">:</span>
+                <span class="n">e_switch</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">e_switch</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">e_sub</span> <span class="o">+=</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">num_list</span><span class="p">,</span> <span class="n">ope_list</span>
+</pre></div>
+</div>
+</section>
+<section id="実行例">
+<h2>実行例<a class="headerlink" href="#実行例" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pitbe</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">jw_hamiltonian</span> <span class="o">=</span> <span class="s1">&#39;(-0.2300259962688794+0j) [] + (-0.04711430043380896+0j) [X0 X1 Y2 Y3] + (0.04711430043380896+0j) [X0 Y1 Y2 X3] + (0.04711430043380896+0j) [Y0 X1 X2 Y3] + (-0.04711430043380896+0j) [Y0 Y1 X2 X3] + (0.153592312841566+0j) [Z0] + (0.16276753098254843+0j) [Z0 Z1] + (0.1135597567900135+0j) [Z0 Z2] + (0.16067405722382247+0j) [Z0 Z3] + (0.153592312841566+0j) [Z1] + (0.16067405722382247+0j) [Z1 Z2] + (0.1135597567900135+0j) [Z1 Z3] + (-0.17274355195698893+0j) [Z2] + (0.16885887724673027+0j) [Z2 Z3] + (-0.17274355195698887+0j) [Z3]&#39;</span>
+
+<span class="n">re_num</span><span class="p">,</span> <span class="n">re_ope</span> <span class="o">=</span> <span class="n">pitbe</span><span class="o">.</span><span class="n">read_jw</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">jw_hamiltonian</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">re_num</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">re_ope</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[-0.2300259962688794, -0.04711430043380896, 0.04711430043380896, 0.04711430043380896, -0.04711430043380896, 0.153592312841566, 0.16276753098254845, 0.1135597567900135, 0.16067405722382247, 0.153592312841566, 0.16067405722382247, 0.1135597567900135, -0.17274355195698893, 0.1688588772467303, -0.17274355195698887]
+[&#39;&#39;, &#39;X0X1Y2Y3&#39;, &#39;X0Y1Y2X3&#39;, &#39;Y0X1X2Y3&#39;, &#39;Y0Y1X2X3&#39;, &#39;Z0&#39;, &#39;Z0Z1&#39;, &#39;Z0Z2&#39;, &#39;Z0Z3&#39;, &#39;Z1&#39;, &#39;Z1Z2&#39;, &#39;Z1Z3&#39;, &#39;Z2&#39;, &#39;Z2Z3&#39;, &#39;Z3&#39;]
+</pre></div></div>
+</div>
+</section>
+<section id="注意点">
+<h2>注意点<a class="headerlink" href="#注意点" title="Link to this heading"></a></h2>
+<div class="line-block">
+<div class="line">前述の通り入力するデータはライブラリ「openfermion」の関数「jordan_wigner」による出力結果を想定している</div>
+<div class="line">この手法の出力結果以外を代入した場合、正しく実行されないこともあることに注意されたし</div>
+</div>
+</section>
 </section>
 
 

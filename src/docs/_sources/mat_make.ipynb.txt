@@ -6,6 +6,157 @@
    "source": [
     "# mat_make"
    ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### 概要"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "この関数では線型結合の係数を補助ビット部分にセットする行列を作成する\n",
+    "量子回路でもちいる行列はユニタリ性を満たす必要があるので複雑な過程が必要だが第一列目の要素と係数さえ入力すれば自動的に作成する"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### 引数一覧"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "|argument name|type|role|\n",
+    "|---|---|---|\n",
+    "|elelist|list(element:float)|線形結合で用いられている係数の一覧|\n",
+    "|coeff_list|list(element:float)|行列を計算する際に必要な値の一覧|"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### 戻り値"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "mat_ele_list（np.array）:\n",
+    "          作成したユニタリ行列が格納されたnp.array\\\n",
+    "          格納されている要素はfloat型"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Python code"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "```python\n",
+    "def mat_make(elelist, coeff_lst):\n",
+    "    mat_ele_list = []\n",
+    "    mat_ele_list.append(elelist)\n",
+    "    for i in range(len(elelist)//2):\n",
+    "        zero_num = i*2\n",
+    "        if np.abs(elelist[i*2]) == 0:\n",
+    "            break\n",
+    "    if elelist[zero_num] != 0:\n",
+    "        zero_num = len(elelist)\n",
+    "    cf_copy = copy.deepcopy(coeff_lst)\n",
+    "    cf_copy.reverse()\n",
+    "    for i in range(len(coeff_lst)):\n",
+    "        adjustor = 0\n",
+    "        mat_copy = copy.deepcopy(mat_ele_list)\n",
+    "        for j in range(len(mat_copy)):\n",
+    "            app_list = vec_make(mat_copy[j], cf_copy[i])\n",
+    "            if i < (len(coeff_lst) - 1.1):\n",
+    "                adjustor = 1\n",
+    "            if np.abs(np.prod(elelist)) == 1:\n",
+    "                adjustor += 1\n",
+    "            if zero_num % 2**(i+2) != 0:\n",
+    "                adjustor += 1\n",
+    "            if adjustor == 3:\n",
+    "                input_ele = 0\n",
+    "                for s in range(2**(i+1) + 2*j):\n",
+    "                    pickup_row_number = (zero_num//(2**(i+2)))*(2**(i+2)) + s\n",
+    "                    input_ele += mat_copy[i][pickup_row_number]**2\n",
+    "                    app_list[pickup_row_number] = 0\n",
+    "                app_list[zero_num] = np.sqrt(input_ele)\n",
+    "                zero_num += 2\n",
+    "            mat_ele_list.append(np.array(app_list))\n",
+    "    base_mat = [[0, -1], [1, 0]]\n",
+    "    unit = np.eye(2)\n",
+    "    convert = np.kron(unit, base_mat)\n",
+    "    for i in range(len(coeff_lst) - 1):\n",
+    "        convert = np.kron(unit, convert)\n",
+    "    mel_len = len(mat_ele_list)\n",
+    "    if (np.log2(len(elelist)) > 1):\n",
+    "        for i in range(mel_len):\n",
+    "            mat_ele_list.append(np.dot(convert, mat_ele_list[i]))\n",
+    "    if (np.log2(len(elelist)) < 1.1):\n",
+    "        mat_ele_list = [[elelist[0], elelist[1]], \n",
+    "                        [elelist[1], -elelist[0]]]\n",
+    "    return np.array(mat_ele_list)\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### 実行例"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import pitbe"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[ 0.5     0.433   0.25    0.433   0.433   0.3536  0.      0.    ]\n",
+      " [-0.3782 -0.3275  0.3305  0.5724 -0.7746 -0.6326  0.      0.    ]\n",
+      " [-0.3372 -0.292  -0.1686 -0.292   0.6421  0.5244  0.      0.    ]\n",
+      " [ 0.255   0.2209 -0.2229 -0.386  -1.1487 -0.9381  0.      0.    ]\n",
+      " [-0.433   0.5    -0.433   0.25   -0.3536  0.433   0.      0.    ]\n",
+      " [ 0.3275 -0.3782 -0.5724  0.3305  0.6326 -0.7746  0.      0.    ]\n",
+      " [ 0.292  -0.3372  0.292  -0.1686 -0.5244  0.6421  0.      0.    ]\n",
+      " [-0.2209  0.255   0.386  -0.2229  0.9381 -1.1487  0.      0.    ]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "ele_lst = [0.5, 0.433, 0.25, 0.433, 0.433, 0.3536, 0., 0.]\n",
+    "cf_lst = [[1.483], [1.322, 0.5590]]\n",
+    "unit_mat = pitbe.mat_make(ele_lst, cf_lst)\n",
+    "print(np.round(unit_mat, 4))"
+   ]
   }
  ],
  "metadata": {

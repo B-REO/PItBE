@@ -155,7 +155,6 @@
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>2進数変換後のそれぞれの桁での値を格納したlist
-格納する順序は1桁目から始まる
 格納されている値の型はstr</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -166,39 +165,6 @@
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cont_order</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="go">[1, 0, 1, 0]</span>
 </pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="manual.main_research">
-<span class="sig-prename descclassname"><span class="pre">manual.</span></span><span class="sig-name descname"><span class="pre">main_research</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ope_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manual.html#main_research"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manual.main_research" title="Link to this definition"></a></dt>
-<dd><p>この関数では線形結合を構成するパウリ行列積の一覧から
-量子回路上で必要なビット数を算出する</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ope_list（list）</strong> – パウリ行列積の一覧を記述したlist
-格納されている各要素はstr型
-本パッケージ内にある関数「read_jw」による出力結果を用いる</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>作用先のビット番号のうち最大のものに1を足して出力する
-1を足しているのは作用先のビット番号が0から始まるためである</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.array(bit_list).max()+1（str）</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">main</span> <span class="o">=</span> <span class="n">main_research</span><span class="p">(</span><span class="n">ope</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>前述の通り入力情報は本パッケージ内の出力結果の利用を
-想定しているので異なる様式を用いた場合望んだ出力結果に
-ならないこともあるので注意してほしい</p>
 </div>
 </dd></dl>
 
@@ -299,6 +265,40 @@
 「jordan_wigner」による出力結果を想定している
 この手法の出力結果以外を代入した場合、
 正しく実行されないこともあることに注意されたし</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manual.total_search">
+<span class="sig-prename descclassname"><span class="pre">manual.</span></span><span class="sig-name descname"><span class="pre">total_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ope_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manual.html#total_search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manual.total_search" title="Link to this definition"></a></dt>
+<dd><p>main_research</p>
+<p>この関数では線形結合を構成するパウリ行列積の一覧から
+量子回路上で必要なビット数を算出する</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ope_list（list）</strong> – パウリ行列積の一覧を記述したlist
+格納されている各要素はstr型
+本パッケージ内にある関数「read_jw」による出力結果を用いる</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>作用先のビット番号のうち最大のものに1を足して出力する
+1を足しているのは作用先のビット番号が0から始まるためである</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array(bit_list).max()+1（str）</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">main</span> <span class="o">=</span> <span class="n">total_search</span><span class="p">(</span><span class="n">ope</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>前述の通り入力情報は本パッケージ内の出力結果の利用を
+想定しているので異なる様式を用いた場合望んだ出力結果に
+ならないこともあるので注意してほしい</p>
 </div>
 </dd></dl>
 
