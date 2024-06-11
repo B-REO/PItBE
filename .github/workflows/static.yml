@@ -39,8 +39,7 @@ jobs:
             pip install -U Sphinx sphinx_rtd_theme myst-parser nbsphinx pandoc
       - name: build document
         run: |
-            sphinx-apidoc -f -o docs drive_simurator
-            sphinx-build -a docs docs/_build
+            sphinx-build -b ./src/rst_files ./docs/_build
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
