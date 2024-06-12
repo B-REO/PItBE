@@ -36,7 +36,7 @@ jobs:
       - name: pip install documents requirements
         run: |
             pip install .
-            pip install -U Sphinx sphinx_rtd_theme myst-parser nbsphinx pandoc
+            pip install -U Sphinx sphinx_rtd_theme myst-parser nbsphinx pandoc recommonmark
       - name: build document
         run: |
             sphinx-build -b html ./src/rst_files ./docs/_build/html
