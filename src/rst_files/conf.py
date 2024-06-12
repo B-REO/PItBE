@@ -7,6 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 import os
+import sphinx_rtd_theme
 import sys
 from recommonmark.parser import CommonMarkParser
 from recommonmark.transform import AutoStructify
