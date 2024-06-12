@@ -79,10 +79,10 @@ language = 'en'
 #}
 # スクロールバーのスタイルを設定
 html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
-html_css_files = [
-    'custom.css',
-]
+#html_static_path = ['_static']
+#html_css_files = [
+#    'custom.css',
+#]
 
 # -- Options for todo extension ----------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/extensions/todo.html#configuration
