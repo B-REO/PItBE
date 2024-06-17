@@ -1,0 +1,2 @@
+qulacs
+qulacs_core
