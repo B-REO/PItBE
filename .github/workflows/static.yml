@@ -40,6 +40,7 @@ jobs:
       - name: build document
         run: |
             sphinx-build -b html ./src/rst_files ./docs/_build/html
+            ls -la ./docs/_build/html
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
@@ -47,9 +48,10 @@ jobs:
         with:
           # Upload entire repository
           # path: './src/docs'
-          path: './src/rst_files/_build/html'
+          # path: './src/rst_files/_build/html'
+          path: './docs/_build/html'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
         with:
-          artifact-name: uploaded-artifact
+          artifact-name: artifact
