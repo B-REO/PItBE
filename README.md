@@ -14,7 +14,7 @@ github pageは同様のことが記載されているが、
 現在筆者の想定した通りの表示ができていない。
 今後の修正度合いに応じて新しい発表を行うので今はアクセスしないことを強く勧める~~
 本パッケージはフォルダ`PItBE`ごと、あるいはフォルダ`src`内のフォルダ`pitbe`のみをgithubを介して手持ちの端末にリポジトリを複製して利用することを推奨する。\
-`pitbe`に含まれている関数についての説明は[github pages](https://b-reo.github.io/PItBE/)、もしくはフォルダ`src/rst_files`に存在する関数名と同じ名前のjupyter notebookを参照。\
+`pitbe`に含まれている関数についての説明は[github pages](https://b-reo.github.io/PItBE/)、もしくはフォルダ`src/rst_files`に存在する関数名と同じ名前のjupyter notebookを参照。
 
 ## 最後に
 本プログラムはまだまだ荒削りであり、利用者にとって扱いやすいものであるとは
