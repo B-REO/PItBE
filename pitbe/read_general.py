@@ -1,12 +1,12 @@
 def read_general(jw_inf):
-    read_counter = 1
     num_list = []
+    ope_list = []
     sub_num_list = ""
-    preserve_switch = 0
+    sub_ope_list = ""
     convert_list = []
     ope_con_list = []
-    ope_list = []
-    sub_ope_list = ""
+    read_counter = 1
+    preserve_switch = 0
     for i in range(len(jw_inf)-1):
         if jw_inf[i+1] == "[":
             read_counter = 2
@@ -31,16 +31,16 @@ def read_general(jw_inf):
                 read_counter = 1
             else:
                 countdown -= 1
-    for i in range(len(ope_con_list)):
-        ope_con_list[i] = ope_con_list[i][1:]
-        if 0 < len(ope_con_list[i]):
-            ope_con_list[i] = ope_con_list[i].replace(" ", "")
-        ope_list.append(ope_con_list[i])
     for i in range(len(convert_list)):
         if convert_list[i][0] != '(':
             num_list.append(complex(convert_list[i]))
         else:
             convert_list[i] = convert_list[i][1:-1]
             num_list.append(complex(convert_list[i]))
+    for i in range(len(ope_con_list)):
+        ope_con_list[i] = ope_con_list[i][1:]
+        if 0 < len(ope_con_list[i]):
+            ope_con_list[i] = ope_con_list[i].replace(" ", "")
+        ope_list.append(ope_con_list[i])
         
     return num_list, ope_list

@@ -4,10 +4,15 @@ pitbe/__init__.py
 pitbe/circ_make.py
 pitbe/coeff_make.py
 pitbe/cont_order.py
-pitbe/main_research.py
 pitbe/mat_make.py
+pitbe/mat_maker.py
 pitbe/normlize.py
+pitbe/qiskit_circ_make.py
+pitbe/read_general.py
 pitbe/read_jw.py
+pitbe/read_jw_old.py
+pitbe/read_xyz.py
+pitbe/total_search.py
 pitbe/vec_make.py
 pitbe.egg-info/PKG-INFO
 pitbe.egg-info/SOURCES.txt

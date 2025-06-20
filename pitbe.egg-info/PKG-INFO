@@ -1,11 +1,9 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: pitbe
-Version: 1.0.1
+Version: 1.0.2
 Summary: aaaaa
-Home-page: UNKNOWN
 Author: Reo BABA
 License: MIT
-Platform: UNKNOWN
-
-UNKNOWN
-
+Dynamic: author
+Dynamic: license
+Dynamic: summary
