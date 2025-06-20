@@ -30,4 +30,7 @@ github pageは同様のことが記載されているが、
 "read_jw"の完全上位互換版であるので"read_general"への移行を強く推奨。\
 関数"qiskit_circ_make"を実装。\
 QiskitにおいてもPItBEを用いたBlock-Encodingを実行可能になった。\
-ただ製作者の環境ではQulacsの方が実行時間は短かった。
+ただ製作者の環境ではQulacsの方が実行時間は短かった。\
+github pagesの不具合のうち大部分を解消、再度公開。\
+ただし、"circ_make"及び"qiskit_circ_make"のページにおいて画像が読み込まれないことは未だ解消されていない。\
+これらのページについては"src/rst_files"中に存在する"circ_make.ipynb"または"qiskit_circ_make.ipynb"を参考にしてほしい。
