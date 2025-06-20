@@ -2,7 +2,7 @@ import numpy as np
 from qiskit.quantum_info import Operator
 from qiskit.circuit.library import ZGate, XGate, YGate, IGate
 
-def circ_make_for_qiskit(gate_inf, zero_one, circ, qubit, ancilla):
+def qiskit_circ_make(gate_inf, zero_one, circ, qubit, ancilla):
     work_ope_order = []
     input_switch = 0
     input_ele = ""
@@ -55,4 +55,3 @@ def circ_make_for_qiskit(gate_inf, zero_one, circ, qubit, ancilla):
             elif work_ope_order[i][0] == "I":
                 add_gate = IGate().control(ancilla, ctrl_state=zero_one)
                 circ.append(add_gate, cont_list)
-                
