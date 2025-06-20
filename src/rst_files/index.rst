@@ -33,4 +33,13 @@ Welcome to the documentation of PItBE!
    :maxdepth: 2
    :caption: Contents:
 
-   ../docs/manual.ipynb
+   ../docs/circ_make.ipynb
+   ../docs/coeff_make.ipynb
+   ../docs/cont_order.ipynb
+   ../docs/mat_maker.ipynb
+   ../docs/normalize.ipynb
+   ../docs/qiskit_circ_make.ipynb
+   ../docs/read_general.ipynb
+   ../docs/read_jw.ipynb
+   ../docs/total_search.ipynb
+   ../docs/vec_make.ipynb
