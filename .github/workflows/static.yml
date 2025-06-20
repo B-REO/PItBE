@@ -1,57 +1,114 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+#name: Deploy static content to Pages
 
-on:
+#on:
   # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
+#  push:
+#    branches: ["main"]
 
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+#  workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+#permissions:
+#  contents: read
+#  pages: write
+#  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+#concurrency:
+#  group: "pages"
+#  cancel-in-progress: false
+
+#jobs:
+  # Single deploy job since we're just deploying
+#  deploy:
+#    environment:
+#      name: github-pages
+#      url: ${{ steps.deployment.outputs.page_url }}
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#      - name: apt install
+#        run: sudo apt install pandoc
+#      - name: pip install documents requirements
+#        run: |
+#            pip install .
+#            pip install -U Sphinx sphinx_rtd_theme myst-parser nbsphinx pandoc recommonmark
+#      - name: build document
+#        run: |
+#            sphinx-build -b html ./src/rst_files ./docs/_build/html
+#            ls -la ./docs/_build/html
+#      - name: Setup Pages
+#        uses: actions/configure-pages@v4
+#      - name: Upload artifact
+#        uses: actions/upload-pages-artifact@v3
+#        with:
+          # Upload entire repository
+          #path: './src/docs'
+#           path: './src/rst_files/_build/html'
+          # path: './docs/_build/html'
+#      - name: Deploy to GitHub Pages
+#        id: deployment
+#        uses: actions/deploy-pages@v4
+        # with:
+          # artifact-name: artifact
+
+#name: Deploy static content to Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: apt install
-        run: sudo apt install pandoc
-      - name: pip install documents requirements
+
+      - name: Install pandoc
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Python dependencies
         run: |
-            pip install .
-            pip install -U Sphinx sphinx_rtd_theme myst-parser nbsphinx pandoc recommonmark
-      - name: build document
+          pip install .
+          pip install -U sphinx sphinx_rtd_theme nbsphinx myst-parser jupyter ipykernel ipython recommonmark
+
+      - name: Build Sphinx documentation
         run: |
-            sphinx-build -b html ./src/rst_files ./docs/_build/html
-            ls -la ./docs/_build/html
+          sphinx-build -b html ./src/rst_files ./docs/_build/html
+          ls -la ./docs/_build/html
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          #path: './src/docs'
-           path: './src/rst_files/_build/html'
-          # path: './docs/_build/html'
+          path: './docs/_build/html'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        # with:
-          # artifact-name: artifact
