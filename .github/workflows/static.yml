@@ -94,7 +94,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install .
-          pip install -U sphinx sphinx_rtd_theme nbsphinx myst-parser jupyter ipykernel ipython recommonmark numpy
+          pip install -U sphinx sphinx_rtd_theme nbsphinx myst-parser jupyter ipykernel ipython recommonmark numpy qulacs
 
       - name: Build Sphinx documentation
         run: |
