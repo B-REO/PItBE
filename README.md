@@ -21,7 +21,13 @@ github pageは同様のことが記載されているが、
 同時に示唆している。今後のアップデートに期待してほしい。
 
 ## 更新情報
-2025/06/20 更新
-関数"mat_maker"を実装。同時にgithub pageにおける関数"mat_make"についての記述を関数"mat_maker"に変更。関数"mat_make"で生じていたユニタリ行列が正しく生成されない問題を解決。今後は"mat_make"を使用せず、"mat_maker"を使用することを強く推奨する。\
-関数"read_general"を実装。関数"read_jw"では対応できなかったOpenfermionによるBravyi変換結果にも対応できるように改良。"read_jw"の完全上位互換版であるので"read_general"への移行を強く推奨。\
-関数"qiskit_circ_make"を実装。QiskitにおいてもPItBEを用いたBlock-Encodingを実行可能になった。ただ製作者の環境ではQulacsの方が実行時間は短かった。
+2025/06/20 更新\
+関数"mat_maker"を実装。同時にgithub pageにおける関数"mat_make"についての記述を関数"mat_maker"に変更。\
+関数"mat_make"で生じていたユニタリ行列が正しく生成されない問題を解決。\
+今後は"mat_make"を使用せず、"mat_maker"を使用することを強く推奨する。\
+関数"read_general"を実装。\
+関数"read_jw"では対応できなかったOpenfermionによるBravyi変換結果にも対応できるように改良。\
+"read_jw"の完全上位互換版であるので"read_general"への移行を強く推奨。\
+関数"qiskit_circ_make"を実装。\
+QiskitにおいてもPItBEを用いたBlock-Encodingを実行可能になった。\
+ただ製作者の環境ではQulacsの方が実行時間は短かった。
