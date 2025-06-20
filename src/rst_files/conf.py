@@ -41,6 +41,9 @@ extensions = [
     'sphinx.ext.napoleon'
 ]
 
+html_file_suffix = '.html'
+html_link_suffix = '.html'
+
 templates_path = ['_templates']
 exclude_patterns = [
     '_build', 'Thumbs.db', 
