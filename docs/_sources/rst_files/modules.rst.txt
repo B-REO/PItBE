@@ -1,7 +1,0 @@
-rst_files
-=========
-
-.. toctree::
-   :maxdepth: 4
-
-   conf

@@ -14,7 +14,8 @@ github pageは同様のことが記載されているが、
 現在筆者の想定した通りの表示ができていない。
 今後の修正度合いに応じて新しい発表を行うので今はアクセスしないことを強く勧める~~
 本パッケージはフォルダ`PItBE`ごと、あるいはフォルダ`src`内のフォルダ`pitbe`のみをgithubを介して手持ちの端末にリポジトリを複製して利用することを推奨する。\
-`pitbe`に含まれている関数についての説明は[github pages](https://b-reo.github.io/PItBE/)、もしくはフォルダ`src/rst_files`に存在する関数名と同じ名前のjupyter notebookを参照。
+`pitbe`に含まれている関数についての説明は[github pages](https://b-reo.github.io/PItBE/)、もしくはフォルダ`src/rst_files`に存在する関数名と同じ名前のjupyter notebookを参照。\
+なお本ページに含まれているフォルダのうち`pitbe`及び`src`以外のファイルについては実行上無視してもらっても構わない。
 
 ## 最後に
 本プログラムはまだまだ荒削りであり、利用者にとって扱いやすいものであるとは
@@ -22,7 +23,7 @@ github pageは同様のことが記載されているが、
 同時に示唆している。今後のアップデートに期待してほしい。
 
 ## 更新情報
-2025/06/20 更新\
+### 2025/06/20 更新\
 関数"mat_maker"を実装。同時にgithub pageにおける関数"mat_make"についての記述を関数"mat_maker"に変更。\
 関数"mat_make"で生じていたユニタリ行列が正しく生成されない問題を解決。\
 今後は"mat_make"を使用せず、"mat_maker"を使用することを強く推奨する。\
@@ -34,4 +35,6 @@ QiskitにおいてもPItBEを用いたBlock-Encodingを実行可能になった�
 ただ製作者の環境ではQulacsの方が実行時間は短かった。\
 github pagesの不具合のうち大部分を解消、再度公開。\
 ただし、"circ_make"及び"qiskit_circ_make"のページにおいて画像が読み込まれないことは未だ解消されていない。\
-これらのページについては"src/rst_files"中に存在する"circ_make.ipynb"または"qiskit_circ_make.ipynb"を参考にしてほしい。
+これらのページについては"src/rst_files"中に存在する"circ_make.ipynb"または"qiskit_circ_make.ipynb"を参考にしてほしい。\
+### 2025/06/25 更新
+READMEの内容のうち利用方法の部分を更新。
