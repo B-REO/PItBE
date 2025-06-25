@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>manual &mdash; ProjectName VersionNumber documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ProjectName
+          </a>
+              <div class="version">
+                VersionNumber
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../manual.html">manual module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ProjectName</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">manual</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for manual</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Introduction of PItBE</span>
+
+<span class="sd">ある正方行列がパウリ行列「X,Y,Z,I」の積による線型結合で記述できる場合、</span>
+<span class="sd">その正方行列を線型結合をなす各成分を作用させることで量子回路上で再現する</span>
+<span class="sd">手法として「ブロックエンコーディング」という手法が存在する。</span>
+
+<span class="sd">本プログラム「PItBE」は正方行列を線型結合で表現した際の情報を</span>
+<span class="sd">入力することで当該行列をブロックエンコーディングした量子回路を</span>
+<span class="sd">出力するものである。</span>
+
+<span class="sd">本プログラムの一部はXANADU社の開発した「PennyLane」というライブラリの</span>
+<span class="sd">実行結果を分析して作成した。ただあくまでも出力結果を参考にして作成した</span>
+<span class="sd">のであってコードをそのまま書き写したものではないことは留意して欲しい。</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">qulacs.gate</span> <span class="kn">import</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">DenseMatrix</span><span class="p">,</span> <span class="n">to_matrix_gate</span>
+
+
+<div class="viewcode-block" id="circ_make"><a class="viewcode-back" href="../manual.html#manual.circ_make">[docs]</a><span class="k">def</span> <span class="nf">circ_make</span><span class="p">(</span><span class="n">gate_inf</span><span class="p">,</span> <span class="n">zero_one</span><span class="p">,</span> <span class="n">circ</span><span class="p">,</span> <span class="n">qubit</span><span class="p">,</span> <span class="n">ancilla</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;circ_make</span>
+
+<span class="sd">    この関数は与えられた情報からブロックエンコーディングの</span>
+<span class="sd">    回路を自動的に組み上げる</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        gate_inf（list）:</span>
+<span class="sd">          パウリ行列積の情報が入ったlist</span>
+<span class="sd">          格納されている各要素はstr型</span>
+<span class="sd">        zero_one（list）:</span>
+<span class="sd">          制御ビットの状態に関する情報が記載されているlist</span>
+<span class="sd">          例えば補助ビット数が5個の回路において</span>
+<span class="sd">          3番目のゲートへの制御ビットは[1, 1, 0, 0, 0]となる</span>
+<span class="sd">          格納されている各要素はstr型</span>
+<span class="sd">          なおこの値は本パッケージ内に含まれている関数</span>
+<span class="sd">          「cont_order」の出力結果を代入することを想定している</span>
+<span class="sd">        circ（qulacs_core.QuantumCircuit）:</span>
+<span class="sd">          組み上げ先の回路</span>
+<span class="sd">          回路のクラスは「qulacs」に含まれるクラスを利用している</span>
+<span class="sd">        qubit（str）:</span>
+<span class="sd">          量子回路に必要な総ビット数（補助ビット+メインビット）</span>
+<span class="sd">        ancilla（str）:</span>
+<span class="sd">          量子回路に必要な補助ビット数</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        前述の通りこの関数には「qulacs」のクラスを一部用いているので</span>
+<span class="sd">        必ず関数のimport部分で「qulacs」をimportすること</span>
+<span class="sd">        また引数「zero_list」の値に説明時に触れたもの以外を</span>
+<span class="sd">        代入した場合想定外の挙動をとる場合もある</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">work_ope_order</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">input_switch</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">input_ele</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">gate_inf</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">gate_a</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+                  <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">qubit</span> <span class="o">-</span> <span class="n">ancilla</span><span class="p">)):</span>
+            <span class="n">gate</span> <span class="o">=</span> <span class="n">DenseMatrix</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ancilla</span> <span class="o">+</span> <span class="n">i</span><span class="p">),</span> <span class="n">gate_a</span><span class="p">)</span>
+            <span class="n">mat_no</span> <span class="o">=</span> <span class="n">to_matrix_gate</span><span class="p">(</span><span class="n">gate</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">zero_one</span><span class="p">)):</span>
+                <span class="n">mat_no</span><span class="o">.</span><span class="n">add_control_qubit</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">zero_one</span><span class="p">)</span> <span class="o">-</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">zero_one</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">circ</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">mat_no</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gate_inf</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">gate_inf</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.5</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">input_switch</span> <span class="o">&gt;</span> <span class="mf">0.3</span><span class="p">:</span>
+                    <span class="n">work_ope_order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input_ele</span><span class="p">)</span>
+                    <span class="n">input_ele</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                    <span class="n">input_switch</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">if</span> <span class="n">gate_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span>
+                    <span class="n">input_switch</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">gate_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span>
+                    <span class="n">input_switch</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">gate_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Z&quot;</span><span class="p">:</span>
+                    <span class="n">input_switch</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">gate_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;I&quot;</span><span class="p">:</span>
+                    <span class="n">input_switch</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">input_ele</span> <span class="o">+=</span> <span class="n">gate_inf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">work_ope_order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input_ele</span><span class="p">)</span>
+                <span class="n">input_switch</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">work_ope_order</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">gate_inf</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">work_ope_order</span><span class="p">)):</span>
+            <span class="n">num_inf</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">work_ope_order</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">num_inf</span> <span class="o">+=</span> <span class="n">work_ope_order</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">tag_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_inf</span><span class="p">)</span>
+            <span class="n">gate_pos</span> <span class="o">=</span> <span class="n">qubit</span> <span class="o">-</span> <span class="n">tag_num</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">work_ope_order</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span>
+                <span class="n">gate_a</span> <span class="o">=</span> <span class="n">X</span><span class="p">(</span><span class="n">gate_pos</span><span class="p">)</span>
+                <span class="n">mat_no</span> <span class="o">=</span> <span class="n">to_matrix_gate</span><span class="p">(</span><span class="n">gate_a</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">zero_one</span><span class="p">)):</span>
+                    <span class="n">cont_pos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">zero_one</span><span class="p">)</span> <span class="o">-</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="n">mat_no</span><span class="o">.</span><span class="n">add_control_qubit</span><span class="p">(</span><span class="n">cont_pos</span><span class="p">,</span> <span class="n">zero_one</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">work_ope_order</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span>
+                <span class="n">gate_a</span> <span class="o">=</span> <span class="n">Y</span><span class="p">(</span><span class="n">gate_pos</span><span class="p">)</span>
+                <span class="n">mat_no</span> <span class="o">=</span> <span class="n">to_matrix_gate</span><span class="p">(</span><span class="n">gate_a</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">zero_one</span><span class="p">)):</span>
+                    <span class="n">cont_pos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">zero_one</span><span class="p">)</span> <span class="o">-</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="n">mat_no</span><span class="o">.</span><span class="n">add_control_qubit</span><span class="p">(</span><span class="n">cont_pos</span><span class="p">,</span> <span class="n">zero_one</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">work_ope_order</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Z&quot;</span><span class="p">:</span>
+                <span class="n">gate_a</span> <span class="o">=</span> <span class="n">Z</span><span class="p">(</span><span class="n">gate_pos</span><span class="p">)</span>
+                <span class="n">mat_no</span> <span class="o">=</span> <span class="n">to_matrix_gate</span><span class="p">(</span><span class="n">gate_a</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">zero_one</span><span class="p">)):</span>
+                    <span class="n">cont_pos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">zero_one</span><span class="p">)</span> <span class="o">-</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="n">mat_no</span><span class="o">.</span><span class="n">add_control_qubit</span><span class="p">(</span><span class="n">cont_pos</span><span class="p">,</span> <span class="n">zero_one</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">work_ope_order</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;I&quot;</span><span class="p">:</span>
+                <span class="n">gate_a</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                          <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+                <span class="n">gate</span> <span class="o">=</span> <span class="n">DenseMatrix</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">gate_inf</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]),</span> <span class="n">gate_a</span><span class="p">)</span>
+                <span class="n">mat_no</span> <span class="o">=</span> <span class="n">to_matrix_gate</span><span class="p">(</span><span class="n">gate</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">zero_one</span><span class="p">)):</span>
+                    <span class="n">cont_pos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">zero_one</span><span class="p">)</span> <span class="o">-</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="n">mat_no</span><span class="o">.</span><span class="n">add_control_qubit</span><span class="p">(</span><span class="n">cont_pos</span><span class="p">,</span> <span class="n">zero_one</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">circ</span><span class="o">.</span><span class="n">add_gate</span><span class="p">(</span><span class="n">mat_no</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="coeff_make"><a class="viewcode-back" href="../manual.html#manual.coeff_make">[docs]</a><span class="k">def</span> <span class="nf">coeff_make</span><span class="p">(</span><span class="n">vec</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;coeff_make</span>
+
+<span class="sd">    この関数では本パッケージ内の関数「mat_make」で用いる引数を作成する</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        vec（list）:</span>
+<span class="sd">          引数を計算したい要素を格納したlist</span>
+<span class="sd">          格納されている各要素はfloat型</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        coeff_list（list）:</span>
+<span class="sd">          計算結果を格納したlist</span>
+<span class="sd">          格納されている各要素はfloat型</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">coeff_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cal_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You do not need to calculate coefficients!!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">vec</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vec</span><span class="p">)))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">pre_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">sep_num</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">elelen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sep_num</span><span class="p">):</span>
+                <span class="n">sum_list</span> <span class="o">=</span> <span class="n">vec</span><span class="p">[</span><span class="n">elelen</span><span class="o">//</span><span class="n">sep_num</span><span class="o">*</span><span class="n">j</span><span class="p">:</span> <span class="p">(</span><span class="n">elelen</span><span class="o">//</span><span class="n">sep_num</span><span class="o">*</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">))]</span>
+                <span class="n">sum_pow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sum_list</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">sum_pow</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">pre_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">pre_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sum_pow</span><span class="p">)</span>
+            <span class="n">cal_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pre_list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cal_list</span><span class="p">)):</span>
+            <span class="n">save_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cal_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">//</span><span class="mi">2</span><span class="p">):</span>
+                <span class="n">save_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">cal_list</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="o">*</span><span class="n">j</span><span class="p">]</span><span class="o">/</span><span class="n">cal_list</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="o">*</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">coeff_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">save_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">coeff_list</span></div>
+
+
+<div class="viewcode-block" id="cont_order"><a class="viewcode-back" href="../manual.html#manual.cont_order">[docs]</a><span class="k">def</span> <span class="nf">cont_order</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">rank</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;cont_order</span>
+
+<span class="sd">    この関数は入力値を任意の桁数の2進数表記に変換する</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        order（str）:</span>
+<span class="sd">          2進数に変換したい値</span>
+<span class="sd">        rank（str）:</span>
+<span class="sd">          2進数表記の際の桁数</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        cont_list（list）:</span>
+<span class="sd">          2進数変換後のそれぞれの桁での値を格納したlist</span>
+<span class="sd">          格納する順序は1桁目から始まる</span>
+<span class="sd">          格納されている値の型はstr</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; cont_order(5, 4)</span>
+<span class="sd">        [1, 0, 1, 0]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">by_order</span> <span class="o">=</span> <span class="nb">format</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;0&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rank</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;b&#39;</span><span class="p">))</span>
+    <span class="n">cont_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">by_order</span><span class="p">)):</span>
+        <span class="n">cont_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">by_order</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">cont_list</span></div>
+
+
+<div class="viewcode-block" id="main_research"><a class="viewcode-back" href="../manual.html#manual.main_research">[docs]</a><span class="k">def</span> <span class="nf">main_research</span><span class="p">(</span><span class="n">ope_list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;main_research</span>
+
+<span class="sd">    この関数では線形結合を構成するパウリ行列積の一覧から</span>
+<span class="sd">    量子回路上で必要なビット数を算出する</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ope_list（list）:</span>
+<span class="sd">        パウリ行列積の一覧を記述したlist</span>
+<span class="sd">        格納されている各要素はstr型</span>
+<span class="sd">        本パッケージ内にある関数「read_jw」による出力結果を用いる</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.array(bit_list).max()+1（str）:</span>
+<span class="sd">        作用先のビット番号のうち最大のものに1を足して出力する</span>
+<span class="sd">        1を足しているのは作用先のビット番号が0から始まるためである</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; main = main_research(ope)</span>
+<span class="sd">        &gt;&gt;&gt; print(main)</span>
+<span class="sd">        6</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        前述の通り入力情報は本パッケージ内の出力結果の利用を</span>
+<span class="sd">        想定しているので異なる様式を用いた場合望んだ出力結果に</span>
+<span class="sd">        ならないこともあるので注意してほしい</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bit_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">app_list</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ope_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ope_list</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">app_switch</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">ope_list</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span>
+                <span class="n">app_switch</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">ope_list</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span>
+                <span class="n">app_switch</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">ope_list</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Z&quot;</span><span class="p">:</span>
+                <span class="n">app_switch</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">ope_list</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;I&quot;</span><span class="p">:</span>
+                <span class="n">app_switch</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">app_switch</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">app_list</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ope_list</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">app_switch</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">bit_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">app_list</span><span class="p">))</span>
+                <span class="n">app_list</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">bit_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">app_list</span><span class="p">))</span>
+        <span class="n">app_list</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bit_list</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="mat_make"><a class="viewcode-back" href="../manual.html#manual.mat_make">[docs]</a><span class="k">def</span> <span class="nf">mat_make</span><span class="p">(</span><span class="n">elelist</span><span class="p">,</span> <span class="n">coeff_lst</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;mat_male</span>
+
+<span class="sd">    この関数では線型結合の係数を補助ビット部分にセットする行列を作成する</span>
+<span class="sd">    量子回路でもちいる行列はユニタリ性を満たす必要があるので</span>
+<span class="sd">    複雑な過程が必要だが第一列目の要素と係数さえ入力すれば自動的に作成する</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        elelist（list）:</span>
+<span class="sd">          作成する行列の第一列目に格納される成分をベクトル要素とするlist</span>
+<span class="sd">          格納されている要素はfloat型</span>
+<span class="sd">        coeff_lst（list）:</span>
+<span class="sd">          関数「vec_nake」でもちいる係数が格納されているlist</span>
+<span class="sd">          格納されている要素はfloat型</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        mat_ele_list（np.array）:</span>
+<span class="sd">          作成したユニタリ行列が格納されたnp.array</span>
+<span class="sd">          格納されている要素はfloat型</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mat_ele_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">mat_ele_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elelist</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">elelist</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">zero_num</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="mi">2</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">elelist</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">if</span> <span class="n">elelist</span><span class="p">[</span><span class="n">zero_num</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">zero_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">elelist</span><span class="p">)</span>
+    <span class="n">cf_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">coeff_lst</span><span class="p">)</span>
+    <span class="n">cf_copy</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coeff_lst</span><span class="p">)):</span>
+        <span class="n">adjustor</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mat_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">mat_ele_list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mat_copy</span><span class="p">)):</span>
+            <span class="n">app_list</span> <span class="o">=</span> <span class="n">vec_make</span><span class="p">(</span><span class="n">mat_copy</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">cf_copy</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coeff_lst</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.1</span><span class="p">):</span>
+                <span class="n">adjustor</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">elelist</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">adjustor</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">zero_num</span> <span class="o">%</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">adjustor</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">adjustor</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">input_ele</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">j</span><span class="p">):</span>
+                    <span class="n">pickup_row_number</span> <span class="o">=</span> <span class="p">(</span><span class="n">zero_num</span><span class="o">//</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)))</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">s</span>
+                    <span class="n">input_ele</span> <span class="o">+=</span> <span class="n">mat_copy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">pickup_row_number</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+                    <span class="n">app_list</span><span class="p">[</span><span class="n">pickup_row_number</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">app_list</span><span class="p">[</span><span class="n">zero_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">input_ele</span><span class="p">)</span>
+                <span class="n">zero_num</span> <span class="o">+=</span> <span class="mi">2</span>
+            <span class="n">mat_ele_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">app_list</span><span class="p">))</span>
+    <span class="n">base_mat</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+    <span class="n">unit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">convert</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">base_mat</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coeff_lst</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">convert</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">convert</span><span class="p">)</span>
+    <span class="n">mel_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mat_ele_list</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">elelist</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mel_len</span><span class="p">):</span>
+            <span class="n">mat_ele_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">convert</span><span class="p">,</span> <span class="n">mat_ele_list</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">elelist</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mf">1.1</span><span class="p">):</span>
+        <span class="n">mat_ele_list</span> <span class="o">=</span> <span class="p">[[</span><span class="n">elelist</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">elelist</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> 
+                        <span class="p">[</span><span class="n">elelist</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">elelist</span><span class="p">[</span><span class="mi">0</span><span class="p">]]]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mat_ele_list</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="normlize"><a class="viewcode-back" href="../manual.html#manual.normlize">[docs]</a><span class="k">def</span> <span class="nf">normlize</span><span class="p">(</span><span class="n">non_normal</span><span class="p">,</span> <span class="n">num_anci</span><span class="p">,</span> <span class="n">num_main</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;normlize</span>
+
+<span class="sd">    ブロックエンコーディングによる出力結果は再現した行列を任意の初期状態に</span>
+<span class="sd">    作用させた結果だけでなく関係のないものも含まれている</span>
+<span class="sd">    この関数ではその出力結果を入力情報として</span>
+<span class="sd">    作用結果のみをピックアップし出力させる</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        non_normal（list）:</span>
+<span class="sd">          ブロックエンコーディングによる初期状態への作用結果</span>
+<span class="sd">          格納されている各要素はfloat型である</span>
+<span class="sd">        num_anci（str）:</span>
+<span class="sd">          ブロックエンコーディングで用いる補助ビットの数</span>
+<span class="sd">        num_main（str）:</span>
+<span class="sd">          ブロックエンコーディングで用いる初期状態を記述するビットの数</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        nor_list（list）:</span>
+<span class="sd">          正しい作用結果のみを格納したlist</span>
+<span class="sd">          格納されている各要素はfloat型である</span>
+<span class="sd">          なおlistのsizeはnum_mainのそれである</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; result = [0.5, 0.5, 0.5, 0.5]</span>
+<span class="sd">        &gt;&gt;&gt; norm_res = normlize(result, 1, 1)</span>
+<span class="sd">        &gt;&gt;&gt; print(norm_res)</span>
+<span class="sd">        [0.5, 0.5]</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        本パッケージに含まれている関数「main_research」を用いることで</span>
+<span class="sd">        引数num_mainは簡単に入力することができる</span>
+<span class="sd">        ぜひ活用してほしい</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nor_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">num_main</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nor_list</span><span class="p">)):</span>
+        <span class="n">nor_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">non_normal</span><span class="p">[(</span><span class="mi">2</span><span class="o">**</span><span class="n">num_anci</span><span class="p">)</span><span class="o">*</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">nor_list</span></div>
+
+
+<div class="viewcode-block" id="read_jw"><a class="viewcode-back" href="../manual.html#manual.read_jw">[docs]</a><span class="k">def</span> <span class="nf">read_jw</span><span class="p">(</span><span class="n">jw_inf</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;read_jw</span>
+
+<span class="sd">    この関数は正方行列のパウリ行列積の線型結合による表現を</span>
+<span class="sd">    入力情報とし、係数部分と行列積部分に分解し出力するものである</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        jw_inf（str）: </span>
+<span class="sd">          正方行列のパウリ行列の線形結合による表現</span>
+<span class="sd">          表現については「openfermion」を通じて</span>
+<span class="sd">          得ることを想定している</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        num_list（list）:</span>
+<span class="sd">          線型結合で用いる係数を格納したlist</span>
+<span class="sd">          各要素はfloat型をとる</span>
+<span class="sd">        ope_list（list）:</span>
+<span class="sd">          線型結合で用いるパウリ行列積を格納したlist</span>
+<span class="sd">          各要素はstr型をとる</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        前述の通り入力するデータはライブラリ「openfermion」の関数</span>
+<span class="sd">        「jordan_wigner」による出力結果を想定している</span>
+<span class="sd">        この手法の出力結果以外を代入した場合、</span>
+<span class="sd">        正しく実行されないこともあることに注意されたし</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">read_counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">minus_counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">plus_counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">sub_num_list</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">ope_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">sub_ope_list</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">e_sub</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">jw_inf</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;(&quot;</span><span class="p">:</span>
+            <span class="n">read_counter</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;[&quot;</span><span class="p">:</span>
+            <span class="n">read_counter</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;+&quot;</span><span class="p">:</span>
+            <span class="n">read_counter</span> <span class="o">=</span> <span class="mi">3</span>
+            <span class="n">plus_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;]&quot;</span><span class="p">:</span>
+            <span class="n">read_counter</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">elif</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;e&quot;</span><span class="p">:</span>
+            <span class="n">read_counter</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="k">if</span> <span class="n">read_counter</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">one_counter</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;+&quot;</span><span class="p">:</span>
+                <span class="n">one_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;e&quot;</span><span class="p">:</span>
+                <span class="n">one_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span>
+                <span class="n">one_counter</span> <span class="o">+=</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+                <span class="n">one_counter</span> <span class="o">+=</span> <span class="mi">3</span>
+            <span class="k">if</span> <span class="n">one_counter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">sub_num_list</span> <span class="o">+=</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">one_counter</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">true_add_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sub_num_list</span><span class="p">)</span>
+                <span class="n">sub_num_list</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">one_counter</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">minus_counter</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">read_counter</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">sub_switch</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;]&quot;</span><span class="p">:</span>
+                <span class="n">sub_switch</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; &quot;</span><span class="p">:</span>
+                <span class="n">sub_switch</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">sub_switch</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">sub_ope_list</span> <span class="o">+=</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">read_counter</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">plus_counter</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">len_snl</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sub_num_list</span><span class="p">)</span>
+            <span class="n">add_ele</span> <span class="o">=</span> <span class="n">true_add_num</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">sub_num_list</span><span class="p">))</span><span class="o">/</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">len_snl</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">e_sub</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">add_ele</span> <span class="o">*=</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="nb">int</span><span class="p">(</span><span class="n">e_sub</span><span class="p">))</span>
+            <span class="n">num_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">add_ele</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="n">minus_counter</span><span class="p">)</span>
+            <span class="n">e_sub</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">sub_num_list</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">read_counter</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">minus_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">read_counter</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">ope_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub_ope_list</span><span class="p">)</span>
+            <span class="n">sub_ope_list</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">read_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">read_counter</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="n">e_switch</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;0&quot;</span><span class="p">:</span>
+                <span class="n">e_switch</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;+&quot;</span><span class="p">:</span>
+                <span class="n">e_switch</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">e_switch</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">e_sub</span> <span class="o">+=</span> <span class="n">jw_inf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">num_list</span><span class="p">,</span> <span class="n">ope_list</span></div>
+
+
+<div class="viewcode-block" id="vec_make"><a class="viewcode-back" href="../manual.html#manual.vec_make">[docs]</a><span class="k">def</span> <span class="nf">vec_make</span><span class="p">(</span><span class="n">ele</span><span class="p">,</span> <span class="n">coflst</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;vec_make</span>
+
+<span class="sd">    この関数は関数「mat_make」内で行列要素を計算するのに用いる</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ele（list）:</span>
+<span class="sd">          「mat_make」で扱う行列の要素が格納されたlist</span>
+<span class="sd">          格納されている各要素の型はfloat</span>
+<span class="sd">        coflst（list）:</span>
+<span class="sd">          「mat_make」の行列要素に作用させる係数を格納したlist</span>
+<span class="sd">          格納されている各要素の型はfloat</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        app_lst（list）:</span>
+<span class="sd">          計算結果を格納するlist</span>
+<span class="sd">          格納されている要素はfloat型</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        この関数は「mat_maker」内のみで用いることを想定している</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">app_lst</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cor_list_one</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cor_list_two</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coflst</span><span class="p">)):</span>
+        <span class="n">corlen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ele</span><span class="p">)</span><span class="o">//</span><span class="nb">len</span><span class="p">(</span><span class="n">coflst</span><span class="p">)</span>
+        <span class="n">cor_list_one</span> <span class="o">=</span> <span class="n">ele</span><span class="p">[</span><span class="n">corlen</span><span class="o">*</span><span class="n">i</span><span class="p">:</span> <span class="n">corlen</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="n">corlen</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">cor_list_two</span> <span class="o">=</span> <span class="n">ele</span><span class="p">[</span><span class="n">corlen</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="n">corlen</span><span class="o">//</span><span class="mi">2</span><span class="p">:</span> <span class="n">corlen</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="n">corlen</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cor_list_one</span><span class="p">)):</span>
+            <span class="n">app_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">cor_list_one</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">/</span><span class="n">coflst</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cor_list_two</span><span class="p">)):</span>
+            <span class="n">app_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cor_list_two</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">coflst</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">app_lst</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, AuthorName.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
