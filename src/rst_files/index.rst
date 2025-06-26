@@ -30,7 +30,7 @@ PItBE Documentation
 Welcome to the documentation of PItBE!
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    circ_make.ipynb
@@ -43,3 +43,4 @@ Welcome to the documentation of PItBE!
    read_jw.ipynb
    total_search.ipynb
    vec_make.ipynb
+   demo_use.ipynb
