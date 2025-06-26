@@ -43,4 +43,9 @@ Welcome to the documentation of PItBE!
    read_jw.ipynb
    total_search.ipynb
    vec_make.ipynb
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Demo:
+
    demo_use.ipynb
