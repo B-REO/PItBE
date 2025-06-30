@@ -19,7 +19,7 @@ BE法についての見識を深めることを期待する。
    :maxdepth: 1
    :caption: Block-Encoding法
 
-   describe_be.ipynb
+   ipynb/describe_be.ipynb
 
 .. toctree::
    :maxdepth: 1
