@@ -31,6 +31,13 @@ Welcome to the documentation of PItBE!
 
 .. toctree::
    :maxdepth: 1
+   :caption: What is Block-Encoding and PItBE?
+
+   Japanese
+   English
+
+.. toctree::
+   :maxdepth: 1
    :caption: Contents:
 
    circ_make.ipynb

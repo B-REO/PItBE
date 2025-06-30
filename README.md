@@ -15,6 +15,7 @@ github pageは同様のことが記載されているが、
 今後の修正度合いに応じて新しい発表を行うので今はアクセスしないことを強く勧める~~
 本パッケージはフォルダ`PItBE`ごと、あるいはフォルダ`src`内のフォルダ`pitbe`のみをgithubを介して手持ちの端末にリポジトリを複製して利用することを推奨する。\
 `pitbe`に含まれている関数についての説明は[github pages](https://b-reo.github.io/PItBE/)、もしくはフォルダ`src/rst_files`に存在する関数名と同じ名前のjupyter notebookを参照。\
+実際の利用方法の見本として[github pages](https://b-reo.github.io/PItBE/)に`Demo Play`という章を用意してあるので、そちらを一読することを推奨する。\
 なお本ページに含まれているフォルダのうち`pitbe`及び`src`以外のファイルについては実行上無視してもらっても構わない。
 
 ## 最後に
@@ -38,3 +39,5 @@ github pagesの不具合のうち大部分を解消、再度公開。\
 これらのページについては"src/rst_files"中に存在する"circ_make.ipynb"または"qiskit_circ_make.ipynb"を参考にしてほしい。\
 ### 2025/06/25 更新
 READMEの内容のうち利用方法の部分を更新。
+### 2025/06/26　　更新
+[github pages](https://b-reo.github.io/PItBE/)に利用方法を説明するページ`Demo Play`を掲載。
