@@ -33,26 +33,26 @@ Welcome to the documentation of PItBE!
    :maxdepth: 1
    :caption: What is Block-Encoding and PItBE?
 
-   English
-   Japanese
+   rst/English
+   rst/Japanese
 
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
 
-   circ_make.ipynb
-   coeff_make.ipynb
-   cont_order.ipynb
-   mat_maker.ipynb
-   normalize.ipynb
-   qiskit_circ_make.ipynb
-   read_general.ipynb
-   read_jw.ipynb
-   total_search.ipynb
-   vec_make.ipynb
+   ipynb/circ_make.ipynb
+   ipynb/coeff_make.ipynb
+   ipynb/cont_order.ipynb
+   ipynb/mat_maker.ipynb
+   ipynb/normalize.ipynb
+   ipynb/qiskit_circ_make.ipynb
+   ipynb/read_general.ipynb
+   ipynb/read_jw.ipynb
+   ipynb/total_search.ipynb
+   ipynb/vec_make.ipynb
 
 .. toctree::
    :maxdepth: 1
    :caption: Demo:
 
-   demo_use.ipynb
+   ipynb/demo_use.ipynb
