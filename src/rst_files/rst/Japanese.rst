@@ -19,11 +19,11 @@ BE法についての見識を深めることを期待する。
    :maxdepth: 1
    :caption: Block-Encoding法
 
-   ipynb/describe_be.ipynb
+   ../ipynb/describe_be.ipynb
 
 .. toctree::
    :maxdepth: 1
    :caption: PItBE
 
-   rst/coming_soon_ja
+   ../rst/coming_soon_ja
    .. describe_pitbe.ipynb
