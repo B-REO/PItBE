@@ -21,7 +21,7 @@ BE法についての見識を深めることを期待する。
 
    describe_be.ipynb
 
-..  toctree::
+.. toctree::
    :maxdepth: 1
    :caption: PItBE
 
