@@ -33,8 +33,8 @@ Welcome to the documentation of PItBE!
    :maxdepth: 1
    :caption: What is Block-Encoding and PItBE?
 
-   Japanese
    English
+   Japanese
 
 .. toctree::
    :maxdepth: 1
