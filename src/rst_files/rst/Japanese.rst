@@ -25,5 +25,5 @@ BE法についての見識を深めることを期待する。
    :maxdepth: 1
    :caption: PItBE
 
-   ../rst/coming_soon_ja
-   .. describe_pitbe.ipynb
+   ../ipynb/describe_pitbe.ipynb
+   .. ../rst/coming_soon_ja
