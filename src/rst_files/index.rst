@@ -28,6 +28,7 @@ PItBE Documentation
 =====================
 
 Welcome to the documentation of PItBE!
+Please select language!
 
 .. toctree::
    :maxdepth: 1
@@ -36,23 +37,3 @@ Welcome to the documentation of PItBE!
    rst/English
    rst/Japanese
 
-.. toctree::
-   :maxdepth: 1
-   :caption: Contents:
-
-   ipynb/circ_make.ipynb
-   ipynb/coeff_make.ipynb
-   ipynb/cont_order.ipynb
-   ipynb/mat_maker.ipynb
-   ipynb/normalize.ipynb
-   ipynb/qiskit_circ_make.ipynb
-   ipynb/read_general.ipynb
-   ipynb/read_jw.ipynb
-   ipynb/total_search.ipynb
-   ipynb/vec_make.ipynb
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Demo:
-
-   ipynb/demo_use.ipynb
