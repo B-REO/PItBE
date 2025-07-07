@@ -20,20 +20,20 @@ BE法についての見識を深めることを期待する。
 こまめな確認を推奨する。
 
 .. toctree::
-   :maxdepth: 1
-   :caption: Read me
+   :maxdepth: 2
+   :caption: Read me:
 
    ../read_me_jp
 
 .. toctree::
-   :maxdepth: 1
-   :caption: Block-Encoding法
+   :maxdepth: 2
+   :caption: Block-Encoding法:
 
    ../ipynb/jpn/describe_be.ipynb
 
 .. toctree::
-   :maxdepth: 1
-   :caption: PItBE
+   :maxdepth: 2:
+   :caption: PItBE:
 
    ../ipynb/jpn/describe_pitbe.ipynb
    .. ../rst/coming_soon_ja

@@ -28,11 +28,11 @@ PItBE Documentation
 =====================
 
 Welcome to the documentation of PItBE!
-Please select language!
+
 
 .. toctree::
    :maxdepth: 1
-   :caption: What is Block-Encoding and PItBE?
+   :caption: Please select language!
 
    rst/English
    rst/Japanese

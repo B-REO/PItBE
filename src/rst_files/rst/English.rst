@@ -15,14 +15,14 @@ To promote broader adoption of the BE method,
 this module also includes explanatory text covering its theoretical background.
 
 .. toctree::
-   :maxdepth: 1
-   :caption: Block-Encoding
+   :maxdepth: 2
+   :caption: Block-Encoding:
 
    ../ipynb/eng/describe_be_en.ipynb
 
 .. toctree::
-   :maxdepth: 1
-   :caption: PItBE
+   :maxdepth: 2
+   :caption: PItBE:
 
    ../ipynb/eng/describe_pitbe_en.ipynb
    .. ../rst/coming_soon_ja
