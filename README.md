@@ -55,3 +55,8 @@ English version and explanation of PItBE to be released in future updates
 
 ### 2025/07/01 Updated
 docs: Add page explaining this module `PItBE` on [Github]()
+
+### 2025/07/07 Updated
+docs: Publish English version of documentation 
+docs: Replace default `README` with English version
+docs: Move Japanese `README` to [here]()
