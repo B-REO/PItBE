@@ -98,7 +98,7 @@ html_theme_options = {
 #    ]
 #}
 
-html_theme = 'nature'  # または 'nature', 'alabaster' など
+html_theme = 'classic'  # または 'nature', 'alabaster' など
 html_static_path = ['_static']
 html_css_files = ['custom.css']  # 必要なら残す
 
