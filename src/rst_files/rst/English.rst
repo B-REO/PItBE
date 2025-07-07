@@ -35,18 +35,9 @@ This document is composed of the following sections:
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
+   :caption: Functions:
 
-   ../ipynb/eng/circ_make_en.ipynb
-   ../ipynb/eng/coeff_make_en.ipynb
-   ../ipynb/eng/cont_order_en.ipynb
-   ../ipynb/eng/mat_maker_en.ipynb
-   ../ipynb/eng/normalize_en.ipynb
-   ../ipynb/eng/qiskit_circ_make_en.ipynb
-   ../ipynb/eng/read_general_en.ipynb
-   ../ipynb/eng/read_jw_en.ipynb
-   ../ipynb/eng/total_search_en.ipynb
-   ../ipynb/eng/vec_make-en.ipynb
+   func_en
 
 .. toctree::
    :maxdepth: 1

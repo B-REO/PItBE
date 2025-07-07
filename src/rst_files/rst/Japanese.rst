@@ -45,16 +45,7 @@ BE法についての見識を深めることを期待する。
    :maxdepth: 1
    :caption: 関数について
 
-   ../ipynb/jpn/circ_make.ipynb
-   ../ipynb/jpn/coeff_make.ipynb
-   ../ipynb/jpn/cont_order.ipynb
-   ../ipynb/jpn/mat_maker.ipynb
-   ../ipynb/jpn/normalize.ipynb
-   ../ipynb/jpn/qiskit_circ_make.ipynb
-   ../ipynb/jpn/read_general.ipynb
-   ../ipynb/jpn/read_jw.ipynb
-   ../ipynb/jpn/total_search.ipynb
-   ../ipynb/jpn/vec_make.ipynb
+   func_ja
 
 .. toctree::
    :maxdepth: 1
