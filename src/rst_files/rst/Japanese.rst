@@ -7,6 +7,13 @@ BE法の理論的背景を解説したテキストを付属する。
 日本語でBE法を解説したものはまだまだ数少ないので、付属テキストを用いて
 BE法についての見識を深めることを期待する。
 
+本テキストは以下の章によって構成されている。
+* Read me：日本語版Readme、本パッケージの日本語版更新情報はここに掲載
+* Block-Encoding法：Block-Encoding法についての理論的解説を行う
+* PItBE：本モジュールの概説及び実行上の推奨環境
+* 関数一覧：本モジュールに含まれている関数についての個別ページ
+* デモプレイ：本モジュールを用いたBlock-Encoding法の実践
+
 なお、本テキストについては量子コンピュータについての基礎的な知識や、
 古典コンピュータ上で実行可能な量子コンピュータシミュレータが
 実行可能であることを前提としている。これらの知識が不十分である場合
@@ -14,10 +21,6 @@ BE法についての見識を深めることを期待する。
 で知識を身につけることを推奨する。
 量子コンピュータの基礎知識からシミュレータの実行方法に至るまで、
 丁寧に解説されているので初学者に適している。
-
-なお本ページには日本語版のReadmeも存在しており、
-本パッケージの更新情報の日本語版はそこで確認できるので、
-こまめな確認を推奨する。
 
 .. toctree::
    :maxdepth: 1
@@ -32,14 +35,14 @@ BE法についての見識を深めることを期待する。
    ../ipynb/jpn/describe_be.ipynb
 
 .. toctree::
-   .. :maxdepth: 2:
+   :maxdepth: 2:
    :caption: PItBE:
 
    ../ipynb/jpn/describe_pitbe.ipynb
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
+   :caption: 関数一覧:
 
    ../ipynb/jpn/circ_make.ipynb
    ../ipynb/jpn/coeff_make.ipynb
@@ -54,6 +57,6 @@ BE法についての見識を深めることを期待する。
 
 .. toctree::
    :maxdepth: 1
-   :caption: Demo:
+   :caption: デモプレイ:
 
    ../ipynb/jpn/demo_use.ipynb

@@ -14,6 +14,12 @@ simply and efficiently.
 To promote broader adoption of the BE method, 
 this module also includes explanatory text covering its theoretical background.
 
+This document is composed of the following sections:
+* Block-Encoding: Theoretical explanation of the Block-Encoding method
+* PItBE: Overview of this module and recommended execution environment
+* Contents: Individual pages explaining each function included in this module
+* Demo: Practical example demonstrating the use of this module to implement the Block-Encoding method
+
 .. toctree::
    :maxdepth: 1
    :caption: Block-Encoding:

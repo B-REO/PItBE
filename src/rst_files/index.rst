@@ -31,7 +31,7 @@ Welcome to the documentation of PItBE!
 
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Please select language!
 
    rst/English
