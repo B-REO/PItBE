@@ -57,6 +57,6 @@ BE法についての見識を深めることを期待する。
 
 .. toctree::
    :maxdepth: 1
-   .. :caption: デモプレイ:
+   :caption: 
 
    ../ipynb/jpn/demo_use.ipynb
