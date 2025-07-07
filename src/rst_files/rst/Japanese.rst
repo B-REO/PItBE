@@ -42,8 +42,7 @@ BE法についての見識を深めることを期待する。
 
 .. toctree::
    :maxdepth: 1
-   .. :caption: 関数一覧:
-
+   :caption: 
    ../ipynb/jpn/circ_make.ipynb
    ../ipynb/jpn/coeff_make.ipynb
    ../ipynb/jpn/cont_order.ipynb
