@@ -89,6 +89,15 @@ html_css_files = [
     'custom.css',
 ]
 
+html_sidebars = {
+    '**': [
+        'globaltoc.html',  # ← グローバル目次
+        'relations.html',  # ← 次へ・前へリンク
+        'sourcelink.html',
+        'searchbox.html'
+    ]
+}
+
 # -- Options for todo extension ----------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/extensions/todo.html#configuration
 
