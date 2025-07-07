@@ -9,9 +9,9 @@ BE法についての見識を深めることを期待する。
 
 本テキストは以下の章によって構成されている。
 * Read me：日本語版Readme、本パッケージの日本語版更新情報はここに掲載
-* Block-Encoding法：Block-Encoding法についての理論的解説を行う
-* PItBE：本モジュールの概説及び実行上の推奨環境
-* 関数一覧：本モジュールに含まれている関数についての個別ページ
+* Block-Encoding法について：Block-Encoding法についての理論的解説を行う
+* PItBEについて：本モジュールの概説及び実行上の推奨環境
+* 関数について：本モジュールに含まれている関数についての個別ページ
 * デモプレイ：本モジュールを用いたBlock-Encoding法の実践
 
 なお、本テキストについては量子コンピュータについての基礎的な知識や、
@@ -24,25 +24,26 @@ BE法についての見識を深めることを期待する。
 
 .. toctree::
    :maxdepth: 1
-   :caption: Read me:
+   .. :caption: Read me:
 
    ../read_me_jp
 
 .. toctree::
    :maxdepth: 1
-   :caption: Block-Encoding法:
+   .. :caption: Block-Encoding法について:
 
    ../ipynb/jpn/describe_be.ipynb
 
 .. toctree::
    :maxdepth: 2:
-   :caption: PItBE:
+   .. :caption: PItBEについて:
 
    ../ipynb/jpn/describe_pitbe.ipynb
 
 .. toctree::
    :maxdepth: 1
-   :caption: 
+   .. :caption: 関数について
+
    ../ipynb/jpn/circ_make.ipynb
    ../ipynb/jpn/coeff_make.ipynb
    ../ipynb/jpn/cont_order.ipynb
@@ -56,6 +57,6 @@ BE法についての見識を深めることを期待する。
 
 .. toctree::
    :maxdepth: 1
-   :caption: デモプレイ:
+   .. :caption: デモプレイ:
 
    ../ipynb/jpn/demo_use.ipynb
