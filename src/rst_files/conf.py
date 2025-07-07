@@ -82,9 +82,9 @@ html_theme_options = {
     'style_outlink': '#1ABC9C',
 }
 # スクロールバーのスタイルを設定
-#html_theme = 'sphinx_rtd_theme'
-#theme_static_path = sphinx_rtd_theme.get_html_theme_path()
-#html_static_path = ['_static', theme_static_path]
+html_theme = 'sphinx_rtd_theme'
+theme_static_path = sphinx_rtd_theme.get_html_theme_path()
+html_static_path = ['_static', theme_static_path]
 #html_css_files = [
 #    'custom.css',
 #]
@@ -98,8 +98,8 @@ html_theme_options = {
 #    ]
 #}
 
-html_theme = 'furo'
-html_static_path = ['_static']
+#html_theme = 'furo'
+#html_static_path = ['_static']
 
 #html_theme = 'alabaster'  # または 'nature', 'alabaster' など
 #html_static_path = ['_static']
