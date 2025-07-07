@@ -98,8 +98,11 @@ html_theme_options = {
 #    ]
 #}
 
-html_theme = 'alabaster'  # または 'nature', 'alabaster' など
+html_theme = 'furo'
 html_static_path = ['_static']
+
+#html_theme = 'alabaster'  # または 'nature', 'alabaster' など
+#html_static_path = ['_static']
 html_css_files = ['custom.css']  # 必要なら残す
 
 # -- Options for todo extension ----------------------------------------------
