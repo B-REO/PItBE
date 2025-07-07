@@ -15,7 +15,7 @@ To promote broader adoption of the BE method,
 this module also includes explanatory text covering its theoretical background.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Block-Encoding:
 
    ../ipynb/eng/describe_be_en.ipynb

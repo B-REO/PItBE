@@ -26,7 +26,7 @@ BE法についての見識を深めることを期待する。
    ../read_me_jp
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Block-Encoding法:
 
    ../ipynb/jpn/describe_be.ipynb
@@ -36,7 +36,6 @@ BE法についての見識を深めることを期待する。
    :caption: PItBE:
 
    ../ipynb/jpn/describe_pitbe.ipynb
-   .. ../rst/coming_soon_ja
 
 .. toctree::
    :maxdepth: 1
