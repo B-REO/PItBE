@@ -37,6 +37,12 @@ BE法についての見識を深めることを期待する。
 
 .. toctree::
    :maxdepth: 1
+   :caption: PItBEについて:
+
+   ../ipynb/jpn/describe_pitbe.ipynb
+
+.. toctree::
+   :maxdepth: 1
    :caption: 関数について
 
    ../ipynb/jpn/circ_make.ipynb
@@ -49,12 +55,6 @@ BE法についての見識を深めることを期待する。
    ../ipynb/jpn/read_jw.ipynb
    ../ipynb/jpn/total_search.ipynb
    ../ipynb/jpn/vec_make.ipynb
-
-.. toctree::
-   :maxdepth: 2:
-   :caption: PItBEについて:
-
-   ../ipynb/jpn/describe_pitbe.ipynb
 
 .. toctree::
    :maxdepth: 1
