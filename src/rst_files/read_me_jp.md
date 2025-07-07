@@ -40,12 +40,12 @@ github pagesの不具合のうち大部分を解消、再度公開。\
 ### 2025/06/25 更新
 READMEの内容のうち利用方法の部分を更新。
 
-### 2025/06/26　　更新
+### 2025/06/26 更新
 [github pages](https://b-reo.github.io/PItBE/)に利用方法を説明するページ`Demo Play`を掲載。
 
 ### 2025/06/30 更新
 [github pages](https://b-reo.github.io/PItBE/)にBlock-Encoding法及びPItBEを説明するページ`What is Block-Encoding and PItBE`にてBlock-Encoding法の理論的背景を解説するページの日本語版を公開。\
 `PItBE`についての説明及び英語版は今後の更新で公開予定。
 
-### 2025/07/01　更新
+### 2025/07/01 更新
 `PItBE`についての説明を行うページの公開。

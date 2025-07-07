@@ -20,7 +20,7 @@ BE法についての見識を深めることを期待する。
 こまめな確認を推奨する。
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Read me:
 
    ../read_me_jp
