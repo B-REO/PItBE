@@ -46,12 +46,12 @@ fix: Resolved major `GitHub Pages` issues and republished site\
 ### 2025/06/25 Updated
 docs: Update `How to use` section in `README`。
 
-### 2025/06/26　　Updated
+### 2025/06/26 Updated
 docs: Add `Demo Play` usage explanation page to [Github pages](https://b-reo.github.io/PItBE/)
 
 ### 2025/06/30 Updated
 docs: Add Japanese version of Block-Encoding theoretical background page on [GitHub Pages](https://b-reo.github.io/PItBE/)\
 English version and explanation of PItBE to be released in future updates
 
-### 2025/07/01　更新
+### 2025/07/01 Updated
 docs: Add page explaining this module `PItBE` on [Github]()

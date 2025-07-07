@@ -32,7 +32,7 @@ BE法についての見識を深めることを期待する。
    ../ipynb/jpn/describe_be.ipynb
 
 .. toctree::
-   :maxdepth: 2:
+   .. :maxdepth: 2:
    :caption: PItBE:
 
    ../ipynb/jpn/describe_pitbe.ipynb
