@@ -59,4 +59,4 @@ docs: Add page explaining this module `PItBE` on [Github]()
 ### 2025/07/07 Updated
 docs: Publish English version of documentation 
 docs: Replace default `README` with English version
-docs: Move Japanese `README` to [here]()
+docs: Move Japanese `README` to [here](src/rst_files/read_me_jp.md)
