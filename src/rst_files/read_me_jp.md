@@ -13,7 +13,7 @@ github pageは同様のことが記載されているが、
 現在筆者の想定した通りの表示ができていない。
 今後の修正度合いに応じて新しい発表を行うので今はアクセスしないことを強く勧める~~
 本パッケージはフォルダ`PItBE`ごと、あるいはフォルダ`src`内のフォルダ`pitbe`のみをgithubを介して手持ちの端末にリポジトリを複製して利用することを推奨する。\
-Block-Encoding法の理論及び`pitbe`に含まれている関数についての説明は本モジュールの[Github pages](https://b-reo.github.io/PItBE/)に記述してあるため、一読することを推奨する。`pitbe`に含まれている関数についてはフォルダ`src/rst_files`に存在する関数名と同じ名前のjupyter notebookでも参照可能。\
+Block-Encoding法の理論及び`pitbe`に含まれている関数についての説明は[関数一覧](../rst_files/rst/func_ja.rst)に記述してあるため、一読することを推奨する。`pitbe`に含まれている関数についてはフォルダ`src/rst_files`に存在する関数名と同じ名前のjupyter notebookでも参照可能。\
 実際の利用方法の見本として[デモプレイ](./ipynb/jpn/demo_use.ipynb)という章を用意してあるので、そちらも一読することを推奨する。\
 なお本ページに含まれているフォルダのうち`pitbe`及び`src`以外のファイルについては実行上無視してもらっても構わない。
 
@@ -44,7 +44,7 @@ READMEの内容のうち利用方法の部分を更新。
 [Github pages](https://b-reo.github.io/PItBE/)に利用方法を説明するページ`Demo Play`を掲載。
 
 ### 2025/06/30 更新
-[github pages](https://b-reo.github.io/PItBE/)にBlock-Encoding法及びPItBEを説明するページ`What is Block-Encoding and PItBE`にてBlock-Encoding法の理論的背景を解説するページの日本語版を公開。\
+[Github pages](https://b-reo.github.io/PItBE/)にBlock-Encoding法及びPItBEを説明するページ`What is Block-Encoding and PItBE`にてBlock-Encoding法の理論的背景を解説するページの日本語版を公開。\
 `PItBE`についての説明及び英語版は今後の更新で公開予定。
 
 ### 2025/07/01 更新
@@ -53,3 +53,7 @@ READMEの内容のうち利用方法の部分を更新。
 ### 2025/07/07 更新
 英語版のページを公開。\
 `Github`で最初に確認できる`Readme`を英語版に変更。
+
+### 2025/07/08 更新
+各ページ間にリンクを貼り付け。\
+軽微な入力ミスの修正。

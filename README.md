@@ -13,7 +13,7 @@ To use this package effectively, we **strongly recommend** installing one of the
 
 Some parts of this package were developed with reference to the behavior and outputs of [PennyLane](https://github.com/PennyLaneAI/pennylane), a quantum machine learning library developed by **Xanadu**.
 
-If you prefer the Japanese version, please refer to [this page]().
+If you prefer the Japanese version, please refer to [this page](src/rst_files/read_me_jp.md).
 
 
 ## How to use
