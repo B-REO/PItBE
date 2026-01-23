@@ -33,7 +33,7 @@ As a practical example of how to use the package, the [GitHub Pages](https://b-r
 ## License
 All source code in this repository, including Python scripts and Jupyter Notebooks, is licensed under the MIT License.You are free to use, modify, and distribute the code, including for commercial purposes, provided that proper attribution is given.
 
-    See [LICENSE-MIT](https://opensource.org/license/mit) for the full text.
+See [LICENSE-MIT](https://opensource.org/license/mit) for the full text.
 
 ## Finally
 This program is still in an early and experimental stage, and we acknowledge that it is far from being user-friendly or polished.  
