@@ -30,6 +30,11 @@ As a practical example of how to use the package, the [GitHub Pages](https://b-r
 
 > **Note:** Files and folders other than `pitbe` and `src` in this repository are not necessary for running the program and can be safely ignored.
 
+## License
+All source code in this repository, including Python scripts and Jupyter Notebooks, is licensed under the MIT License.You are free to use, modify, and distribute the code, including for commercial purposes, provided that proper attribution is given.
+
+    See [LICENSE-MIT](https://opensource.org/license/mit) for the full text.
+
 ## Finally
 This program is still in an early and experimental stage, and we acknowledge that it is far from being user-friendly or polished.  
 However, this also indicates its potential for further development and improvement.  
@@ -60,3 +65,6 @@ docs: Add page explaining this module `PItBE` on [Github]()
 docs: Publish English version of documentation 
 docs: Replace default `README` with English version
 docs: Move Japanese `README` to [here](src/rst_files/read_me_jp.md)
+
+### 2026/01/23 Updated
+README.md: Add a section describing the license
