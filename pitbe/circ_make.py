@@ -39,7 +39,7 @@ def circ_make(gate_inf, zero_one, circ, qubit, ancilla):
             for j in range(len(work_ope_order[i])-1):
                 num_inf += work_ope_order[i][j+1]
             tag_num = int(num_inf)
-            gate_pos = qubit - tag_num - 1
+            gate_pos = ancilla + tag_num
             if work_ope_order[i][0] == "X":
                 gate_a = X(gate_pos)
                 mat_no = to_matrix_gate(gate_a)

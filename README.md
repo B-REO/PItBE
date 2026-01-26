@@ -68,3 +68,6 @@ docs: Move Japanese `README` to [here](src/rst_files/read_me_jp.md)
 
 ### 2026/01/23 Updated
 README.md: Add a section describing the license
+
+### 2026/01/26 Updated
+Module `circ_make.py`: Fixed an error caused by the lack of consideration for ancilla qubits.
