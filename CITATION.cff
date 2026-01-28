@@ -1,0 +1,9 @@
+cff-version: 1.1.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: Baba
+  given-names: Reo
+orcid: https://orcid.org/0009-0006-4020-099X
+title:B-REO/PItBE: v.1.0.1
+version: v.1.0.1
+date-released: 2026-01-26
