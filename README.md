@@ -1,4 +1,7 @@
 # PItBE
+
+[![DOI](https://zenodo.org/badge/811062694.svg)](https://zenodo.org/badge/latestdoi/811062694)
+
 ## Introduction
 
 This Python package implements the Block-Encoding (BE) method, which allows for simulating non-unitary operators on a quantum circuit, assuming that the Hamiltonian can be expressed as a linear combination of Pauli products.
