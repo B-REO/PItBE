@@ -44,6 +44,14 @@ This program is still in an early and experimental stage, and we acknowledge tha
 However, this also indicates its potential for further development and improvement.  
 We hope you will look forward to future updates.
 
+## Contact
+
+For questions or issues, please contact:
+
+- Reo BABA, Department of Chemistry, Graduate School of Science, Kyoto University, Kitashirakawa Oiwake-cho, Sakyo-ku Kyoto, 606-8502, Japan
+- Email: baba@theoc.kuchem.kyoto-u.ac.jp
+- GitHub: https://github.com/B-REO￼
+
 ## Update Information
 ### 2025/06/20 Updated
 feat: Implement `mat_maker`; updated GitHub Pages docs from `mat_make` to `mat_maker`\
@@ -75,3 +83,6 @@ README.md: Add a section describing the license
 
 ### 2026/01/26 Updated
 Module `circ_make.py`: Fixed an error caused by the lack of consideration for ancilla qubits.
+
+### 2026/02/12 Updated
+README.md: Add `Contact` section 
